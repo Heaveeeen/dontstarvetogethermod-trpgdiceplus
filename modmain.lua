@@ -1,10 +1,8 @@
-local ModUserCommands = require("modusercommands")
-
-AddModUserCommand("trpg_dice_plus", "r", {
+GLOBAL.AddModUserCommand("trpg_dice_plus", "r", {
     aliases = { "r" },
     prettyname = nil,
     desc = nil,
-    permission = COMMAND_PERMISSION.USER,
+    permission = GLOBAL.COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
