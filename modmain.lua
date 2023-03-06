@@ -1,3 +1,6 @@
+local Lang = GetModConfigData("LANGUAGE")
+local Strings = require("lang-" .. lang)
+
 GLOBAL.AddModUserCommand("trpg_dice_plus", "r", {
     aliases = { "r" },
     prettyname = nil,
