@@ -1,6 +1,7 @@
 modimport("dice/dicecore.lua")
 
 local DEFAULT_DICE = "1D100"
+local _G = GLOBAL
 
 local roomrule = GetModConfigData("COC_SUB_RULE")
 local displaycmd = GetModConfigData("DISPLAY_COMMAND")
@@ -83,21 +84,6 @@ local statueAlias =
     { "侦查", "侦察", },
 }
 
-GLOBAL.setmetatable(status, {
-    __index = function( t, k )
-        local dk = Dealias(k)
-        if t[dk] then
-            return t[dk]
-        else
-            return defaultStatus[dk] or 0
-        end
-    end,
-
-    __newindex = function( t, k, v )
-        t[Dealias(k)] = v
-    end,
-})
-
 local function Dealias( name )
     for i,x in ipairs(statueAlias) do
         for j,y in ipairs(x) do
@@ -107,6 +93,20 @@ local function Dealias( name )
         end
     end
     return name
+end
+
+_G.setmetatable(status, {
+    __index = function( t, k )
+        return defaultStatus[Dealias(k)] or 0
+    end,
+
+    __newindex = function( t, k, v )
+        t[Dealias(k)] = v
+    end,
+})
+
+local function GetStatue( name )
+    return status[Dealias(name)]
 end
 
 local function GetCharLang( name )
@@ -127,16 +127,16 @@ local function GetRString( charName, arg1, arg2 )
             exp = arg2
             name = arg1
         else
-            return GetRString(charName, DEFAULT_DICE, arg1 .. "-" .. arg2)  --/r 心理 学 <==> /r 心理-学
+            return GetRString(charName, DEFAULT_DICE, arg1.."-"..arg2)  --/r 心理 学 <==> /r 心理-学
         end
-        return GLOBAL.subfmt(charlang.NR, {
+        return _G.subfmt(charlang.NR, {
                 R_NAME = name,
                 EXP = string.format("%s=%d", exp, ParseDiceExp(exp)),
             })  --/r 1D100 心理学
     else
         local temp = arg1 or arg2
         if ParseDiceExp(temp) then
-            return GLOBAL.subfmt(charlang.R, {
+            return _G.subfmt(charlang.R, {
                 EXP = string.format("%s=%d", temp, ParseDiceExp(temp)),
             })  --/r 1D100
         else
@@ -147,14 +147,66 @@ end
 
 local function GetRaString( charName, arg1, arg2, arg3 )
     local charlang = GetCharLang(charName)
-    local stvalue = value or (name and status[name] or 0)
-    local bonus = bp > 0
-    local exDiceAmt = GLOBAL.math.abs(bp)
+    local name,stvalue,bp = nil,0,0
 
-    local dice = roll(1, 10)
+    --此处的逻辑我整理了很久，有点复杂，详见：
+    --https://github.com/Heaveeeen/dontstarvetogethermod-trpgdiceplus/issues/10
+    local function getBP( str )
+        if string.match(str, "[BbPp]%d+") == str then
+            local bp_o,bp_n = string.match(str, "([BbPp])(%d+)")
+            return string.upper(bp_o) == "B" and _G.tonumber(bp_n) or _G.tonumber(bp_n) * -1
+        else
+            return nil
+        end
+    end
+
+    if arg1 == nil then  --没有参数
+        stvalue = 0  --/ra
+    elseif arg2 == nil then  -----* 1个参数 *
+        if _G.tonumber(arg1) then
+            stvalue = _G.tonumber(arg1)  --/ra 70
+        else
+            name = arg1
+            stvalue = GetStatue(name)  --/ra 侦查
+        end
+    elseif arg3 == nil then  -----* 2个参数 *
+        if getBP(arg2) then
+            bp = getBP(arg2)
+            if _G.tonumber(arg1) then
+                stvalue = _G.tonumber(arg1)  --/ra 70 B2
+            else
+                name = arg1
+                stvalue = GetStatue(name)  --/ra 侦查 P1
+            end
+        else
+            local temp = _G.tonumber(arg1) or _G.tonumber(arg2)
+            if temp then
+                name = _G.tonumber(arg1) and arg2 or arg1
+                stvalue = temp  --/ra 邪教徒斗殴 50; /ra 40 邪教徒射击
+            else
+                name = arg1.."-"..arg2
+                stvalue = GetStatue(name)  -- /ra 邪教徒 斗殴 ( <==> /ra 邪教徒-斗殴 )
+            end
+        end
+    else  ------------------------* 3个参数 *
+        bp = getBP(arg3) or 0
+        local temp = _G.tonumber(arg1) or _G.tonumber(arg2)
+        if temp then
+            name = _G.tonumber(arg1) and arg2 or arg1
+            stvalue = temp  --/ra 邪教徒驾驶 60 b2; /ra 60 邪教徒驾驶 P1
+        else
+            name = arg1.."-"..arg2
+            stvalue = GetStatue(name)  -- /ra 邪教徒 斗殴 B1 ( <==> /ra 邪教徒-斗殴 B1 )
+        end
+    end
+
+    local bonus = bp > 0
+    local exDiceAmt = _G.math.abs(bp)
+
+    local dice = ParseDiceExp("1D10")
     local diceB = {}
     for i=1,exDiceAmt+1 do
-        diceB[i] = roll(1, 10)
+        diceB[i] = ParseDiceExp("1D10-1")
     end
 
     local function d100(a, b)
@@ -167,12 +219,12 @@ local function GetRaString( charName, arg1, arg2, arg3 )
 
     local res1 = d100(dice, diceB[exDiceAmt+1])
     local res2 = res1
-
     local exDiceStr = ""
+
     if exDiceAmt > 0 then
-        local exDiceStr = GLOBAL.tostring(diceB[1])
+        exDiceStr = _G.tostring(diceB[1])
         for i=2,exDiceAmt do
-            exDiceStr = exDiceStr .. ", " .. GLOBAL.tostring()
+            exDiceStr = exDiceStr .. "," .. _G.tostring(diceB[i])
         end
 
         local m = diceB[exDiceAmt+1]
@@ -181,13 +233,13 @@ local function GetRaString( charName, arg1, arg2, arg3 )
                 m = d100(dice, m) < d100(dice, diceB[i]) and m or diceB[i]
             end
             res2 = d100(dice, m)
-            exDiceStr = string.format("[%s%s]=%d", COC_DICE_LANG._.BONUS_DICE, exDiceStr, res2)
+            exDiceStr = string.format(" [%s%s] =%d", COC_DICE_LANG._.BONUS_DICE, exDiceStr, res2)
         else
             for i=1,exDiceAmt do
                 m = d100(dice, m) > d100(dice, diceB[i]) and m or diceB[i]
             end
             res2 = d100(dice, m)
-            exDiceStr = string.format("[%s%s]=%d", COC_DICE_LANG._.PENALTY_DICE, exDiceStr, res2)
+            exDiceStr = string.format(" [%s%s] =%d", COC_DICE_LANG._.PENALTY_DICE, exDiceStr, res2)
         end
     end
 
@@ -216,9 +268,9 @@ local function GetRaString( charName, arg1, arg2, arg3 )
     local function OtherRes(r, s)
         if r > s then
             return 2  --失败
-        elseif r > GLOBAL.math.floor(s/2) then
+        elseif r > _G.math.floor(s/2) then
             return 3  --常规成功
-        elseif r > GLOBAL.math.floor(s/5) then
+        elseif r > _G.math.floor(s/5) then
             return 4  --困难成功
         else
             return 5  --极难成功
@@ -227,11 +279,11 @@ local function GetRaString( charName, arg1, arg2, arg3 )
 
     local rares = CriOrFum(roomrule, res2, stvalue) or OtherRes(res2, stvalue)
 
-    return name and GLOBAL.subfmt(charlang.NRA, {
+    return name and _G.subfmt(charlang.NRA, {
         RA_NAME = name,
         EXP = string.format("%s=%d%s/%d", DEFAULT_DICE, res1, exDiceStr, stvalue),
         RA_RES = charlang.RA_RES[rares],
-    }) or GLOBAL.subfmt(charlang.RA, {
+    }) or _G.subfmt(charlang.RA, {
         EXP = string.format("%s=%d%s/%d", DEFAULT_DICE, res1, exDiceStr, stvalue),
         RA_RES = charlang.RA_RES[rares],
     })
@@ -239,10 +291,16 @@ end
 
 
 
-GLOBAL.AddModUserCommand("r", "r", {
+--------------------------
+-- ADD MOD USER COMMAND --
+--------------------------
+
+
+
+_G.AddModUserCommand("r", "r", {
     prettyname = nil,
     desc = nil,
-    permission = GLOBAL.COMMAND_PERMISSION.USER,
+    permission = _G.COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -251,13 +309,54 @@ GLOBAL.AddModUserCommand("r", "r", {
     vote = false,
     localfn = function(params, caller)
         if displaycmd then
-            GLOBAL.TheNet:Say("(/r"..
+            _G.TheNet:Say("(/r"..
                 (params.arg1 and " " .. params.arg1 or "") ..
                 (params.arg2 and " " .. params.arg2 or "") .. ")\238\132\130" ..
                 GetRString(caller.prefab, params.arg1, params.arg2)
             )
         else
-            GLOBAL.TheNet:Say(GetRString(caller.prefab, params.arg1, params.arg2))
+            _G.TheNet:Say(GetRString(caller.prefab, params.arg1, params.arg2))
         end
     end,
+})
+
+
+
+local function ralocalfn(params, caller)
+    if displaycmd then
+        _G.TheNet:Say("(/ra"..
+            (params.arg1 and " " .. params.arg1 or "") ..
+            (params.arg2 and " " .. params.arg2 or "") ..
+            (params.arg3 and " " .. params.arg3 or "") .. ")\238\132\130" ..
+            GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3)
+        )
+    else
+        _G.TheNet:Say(GetRString(caller.prefab, params.arg1, params.arg2, params.arg3))
+    end
+end
+
+_G.AddModUserCommand("ra", "ra", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "arg1", "arg2", "arg3" },
+    paramsoptional = { true, true, true },
+    vote = false,
+    localfn = ralocalfn,
+})
+
+_G.AddModUserCommand("rc", "rc", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "arg1", "arg2", "arg3" },
+    paramsoptional = { true, true, true },
+    vote = false,
+    localfn = ralocalfn,
 })

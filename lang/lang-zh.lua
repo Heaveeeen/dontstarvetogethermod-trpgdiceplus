@@ -189,8 +189,8 @@ COC_DICE_LANG =
         ST_SHOW = "我的{ST_NAME}差不多有{ST_VALUE}那么多。",
         ST_CLEAR = "我把所有东西都烧光了！",
 
-        RA = "我要试试点燃{RA_NAME}：{EXP}，{RA_RES}",
-        NRA = "我要点把火试试：{EXP}，{RA_RES}",
+        RA = "我要点把火试试：{EXP}，{RA_RES}",
+        NRA = "我要试试点燃{RA_NAME}：{EXP}，{RA_RES}",
         RA_RES =
         {
             "大失败，好冷！像冰火在燃烧！",

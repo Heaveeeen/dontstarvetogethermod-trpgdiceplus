@@ -1,4 +1,4 @@
-name = "TRPG掷骰增强"
+name = "TRPG掷骰增强(alpha)"
 description = "加入多种掷骰指令以辅助在饥荒里玩跑团（TRPG）\n目前仅支持COC7一种规则"
 author = "苍穹"
 version = "1.0"
