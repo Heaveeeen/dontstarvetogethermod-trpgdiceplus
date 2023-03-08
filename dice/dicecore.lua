@@ -1,5 +1,6 @@
 GLOBAL.math.randomseed(GLOBAL.os.time())
 local rand = GLOBAL.math.random
+local _G = GLOBAL
 
 local function roll( amount, sides )
     local count = 0
@@ -26,7 +27,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
 		else
 			a,d,s = nil,string.match(exp2, "[dD]"),nil  -- D <==> 1D100
 		end
-        exp2 = string.gsub(exp2, (a or "")..d..(s or ""), roll(GLOBAL.tonumber(a) or 1, GLOBAL.tonumber(s) or 100))
+        exp2 = string.gsub(exp2, (a or "")..d..(s or ""), roll(_G.tonumber(a) or 1, _G.tonumber(s) or 100))
     end    --"(11+10)*3+4"
 
     local function operate( e, p, op )
@@ -36,8 +37,8 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
         local _e = e
         while string.match(_e, op) do
 		    local n1, o, n2 = string.match(_e, p)
-            n1 = GLOBAL.tonumber(n1)
-            n2 = GLOBAL.tonumber(n2)
+            n1 = _G.tonumber(n1)
+            n2 = _G.tonumber(n2)
             if not (n1 and n2) then
                 return nil
             end
@@ -46,7 +47,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
                 or o == "*" and n1 * n2
                 or o == "/" and n1 / n2
                 or 0
-            _e = string.gsub(_e, p, GLOBAL.tostring(r), 1)
+            _e = string.gsub(_e, p, _G.tostring(r), 1)
         end
         return _e
     end
@@ -74,7 +75,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
         end
         _e = operate(_e, "(%d+)([%+%-])(%d+)", "[%+%-]")  --"67"
 
-        return GLOBAL.tonumber(_e)  --67
+        return _G.tonumber(_e)  --67
 
     end
 

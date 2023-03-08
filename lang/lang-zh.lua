@@ -288,8 +288,8 @@ COC_DICE_LANG =
         },
 
         SC = "我脚下的地面仿佛正在崩溃 ({SC_VALUE}) 。{EXP}, ",
-        SC_SUCCESS = "成功。痛苦依旧, 但我早已麻木。只失去了{EXP}点SAN。",
-        SC_FAIL = "失败。阿比盖尔, 你在哪? 我失去了{EXP}点SAN……",
+        SC_SUCCESS = "成功。痛苦依旧, 但我早已麻木。只失去了{EXP_2}点SAN。",
+        SC_FAIL = "失败。阿比盖尔, 你在哪? 我失去了{EXP_2}点SAN……",
 
         INS_CHAR_NAME = "我",
         TI = "我的意识开始迷离: {EXP}, 我感到了{INS_NAME}。{INS_DES}。阿比盖尔, 请等我{EXP_2}小时。",

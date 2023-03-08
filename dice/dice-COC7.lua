@@ -1,6 +1,5 @@
 modimport("dice/dice-NONE.lua")
 
-local DEFAULT_DICE = "1D100"
 local _G = GLOBAL
 
 local roomrule = GetModConfigData("COC_SUB_RULE")
@@ -23,7 +22,20 @@ defaultStatus["电气维修"] = 10
 defaultStatus["电子学"] = 1
 defaultStatus["话术"] = 5
 defaultStatus["斗殴"] = 25
+defaultStatus["斧"] = 15
+defaultStatus["链锯"] = 10
+defaultStatus["连枷"] = 10
+defaultStatus["绞索"] = 15
+defaultStatus["矛"] = 20
+defaultStatus["剑"] = 20
+defaultStatus["鞭"] = 5
 defaultStatus["手枪"] = 20
+defaultStatus["弓"] = 15
+defaultStatus["重武器"] = 10
+defaultStatus["火焰喷射器"] = 10
+defaultStatus["机枪"] = 10
+defaultStatus["步枪"] = 25
+defaultStatus["冲锋枪"] = 15
 defaultStatus["急救"] = 30
 defaultStatus["历史"] = 5
 defaultStatus["恐吓"] = 15
@@ -43,6 +55,19 @@ defaultStatus["驾驶"] = 1
 defaultStatus["精神分析"] = 1
 defaultStatus["心理学"] = 10
 defaultStatus["骑术"] = 5
+defaultStatus["天文学"] = 1
+defaultStatus["生物学"] = 1
+defaultStatus["植物学"] = 1
+defaultStatus["化学"] = 1
+defaultStatus["密码学"] = 1
+defaultStatus["工程学"] = 1
+defaultStatus["司法科学"] = 1
+defaultStatus["地质学"] = 1
+defaultStatus["数学"] = 10
+defaultStatus["气象学"] = 1
+defaultStatus["药学"] = 1
+defaultStatus["物理学"] = 1
+defaultStatus["动物学"] = 1
 defaultStatus["妙手"] = 10
 defaultStatus["侦查"] = 25
 defaultStatus["潜行"] = 20
@@ -77,12 +102,14 @@ local statueAlias =
     { "信用评级", "信誉", "信用", },
     { "克苏鲁神话", "克苏鲁", "cm", },
     { "汽车驾驶", "汽车", },
+    { "步枪", "霰弹枪", },
     { "图书馆使用", "图书馆", },
     { "锁匠", "开锁", "撬锁", },
     { "博物学", "自然学", },
     { "领航", "导航", },
     { "操作重型机械", "重型机械", "重型操作", "重型", },
     { "侦查", "侦察", },
+    { "驯兽", "动物驯养", },
 }
 
 local function Dealias( name )
@@ -132,11 +159,11 @@ end
 --------------
 
 function COC7_GetStString( charName, arg1, arg2 )
-    local charlang = GetCharLang(charName)
+    local charLang = GetCharLang(charName)
 
     if arg2 then
         if string.lower(arg1) == "show" then
-            return _G.subfmt(charlang.ST_SHOW, {
+            return _G.subfmt(charLang.ST_SHOW, {
                 ST_NAME = arg2,
                 ST_VALUE = GetStatue(arg2),
             })  --/st show san
@@ -146,7 +173,7 @@ function COC7_GetStString( charName, arg1, arg2 )
     else
         if string.match(arg1, "%D+%d+") then
             local count = 0
-            local temptable = {}
+            local tempTable = {}
 
             for name,value in string.gmatch(arg1, "(%D+)(%d+)") do
                 count = count + 1
@@ -155,16 +182,16 @@ function COC7_GetStString( charName, arg1, arg2 )
                     name = string.sub(name, 1, -2)
                 end
                 if name ~= "" and not string.match(string.sub(name, -1), "[%+%-]") then
-                    temptable[name] = { op = operator, v = _G.tonumber(value), }
+                    tempTable[name] = { op = operator, v = _G.tonumber(value), }
                 else
-                    return _G.subfmt(charlang.ST_ERROR, {
+                    return _G.subfmt(charLang.ST_ERROR, {
                         ST_ERR_NUM = count,
                         ST_ERR_CODE = name..(operator or "")..value,
                     })  --用/st设置属性时格式出错
                 end
             end
 
-            for name,args in pairs(temptable) do
+            for name,args in pairs(tempTable) do
                 if args.op then
                     ChangeStatue(name, args.op == "+" and args.v or -1 * args.v)
                 else
@@ -175,13 +202,13 @@ function COC7_GetStString( charName, arg1, arg2 )
                 end
             end
 
-            return _G.subfmt(charlang.ST, {
+            return _G.subfmt(charLang.ST, {
                 ST_AMOUNT = _G.tostring(count),
             })  --/st 力量50体质50xxxxxxxx; /st san-5hp+2
 
         elseif (string.lower(arg1) == "clear") or (string.lower(arg1) == "init") then
             ClearStatue()
-            return charlang.ST_CLEAR  --/st clear; /st init (clear和init不区分大小写)
+            return charLang.ST_CLEAR  --/st clear; /st init (clear和init不区分大小写)
         else
             return nil
         end
@@ -195,7 +222,7 @@ end
 ---------------
 
 function COC7_GetRaString( charName, arg1, arg2, arg3 )
-    local charlang = GetCharLang(charName)
+    local charLang = GetCharLang(charName)
     local name,stvalue,bp = nil,0,0
 
     --此处的逻辑我整理了很久，有点复杂，详见：
@@ -328,14 +355,50 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
 
     local rares = CriOrFum(roomrule, res2, stvalue) or OtherRes(res2, stvalue)
 
-    return name and _G.subfmt(charlang.NRA, {
+    return name and _G.subfmt(charLang.NRA, {
         RA_NAME = name,
-        EXP = string.format("%s=%d%s/%d", DEFAULT_DICE, res1, exDiceStr, stvalue),
-        RA_RES = charlang.RA_RES[rares],
-    }) or _G.subfmt(charlang.RA, {
-        EXP = string.format("%s=%d%s/%d", DEFAULT_DICE, res1, exDiceStr, stvalue),
-        RA_RES = charlang.RA_RES[rares],
+        EXP = string.format("1D100=%d%s/%d", res1, exDiceStr, stvalue),
+        RA_RES = charLang.RA_RES[rares],
+    }) or _G.subfmt(charLang.RA, {
+        EXP = string.format("1D100=%d%s/%d", res1, exDiceStr, stvalue),
+        RA_RES = charLang.RA_RES[rares],
     })
+end
+
+
+
+---------------
+-- SAN CHECK --
+---------------
+
+function COC7_GetScString( charName, scValue )
+    local charLang = GetCharLang(charName)
+
+    if scValue == string.match(scValue, "[^/]+/[^/]+") then
+        local ss,sf = string.match(scValue, "([^/]+)/([^/]+)")
+        if ParseDiceExp(ss) and ParseDiceExp(sf) then
+            local res1 = ParseDiceExp("1D100")
+            local exp1 = string.format("1D100=%d/%d", res1, GetStatue("san"))
+
+            local res2,str,sanExp = 0,"",""
+            if res1 > GetStatue("san") then
+                sanExp = ss
+                str = charLang.SC..charLang.SC_SUCCESS
+            else
+                sanExp = sf
+                str = charLang.SC..charLang.SC_FAIL
+            end
+            res2 = ParseDiceExp(sanExp)
+            local exp2 = string.format("%s=%d/%d", sanExp, res2, GetStatue("san"))
+
+            ChangeStatue("san", -1 * res2)
+            return _G.subfmt(str, {
+                SC_VALUE = scValue,
+                EXP = exp1,
+                EXP_2 = exp2,
+            })
+        end
+    end
 end
 
 
@@ -414,5 +477,31 @@ _G.AddModUserCommand("rc", "rc", {
     vote = false,
     localfn = function( params, caller )
         ralocalfn( params, caller, "rc" )
+    end,
+})
+
+_G.AddModUserCommand("sc", "sc", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "value" },
+    paramsoptional = { false },
+    vote = false,
+    localfn = function(params, caller)
+        local scstring = COC7_GetScString(caller.prefab, params.value)
+        if not scstring then
+            return nil
+        end
+        if displaycmd then
+            _G.TheNet:Say("(/sc"..
+                (params.value and " " .. params.value or "")..")"..
+                MSG_PREFIX..scstring
+            )
+        else
+            _G.TheNet:Say(MSG_PREFIX..scstring)
+        end
     end,
 })

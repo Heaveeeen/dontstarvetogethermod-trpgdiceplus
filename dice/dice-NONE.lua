@@ -14,7 +14,7 @@ end
 
 -- /r
 function GetRString( charName, arg1, arg2 )
-    local charlang = GetCharLang(charName)
+    local charLang = GetCharLang(charName)
 
     if not (arg1 or arg2) then
         return GetRString(charName, DEFAULT_DICE)  --/r <==> /r 1D100
@@ -29,14 +29,14 @@ function GetRString( charName, arg1, arg2 )
         else
             return GetRString(charName, DEFAULT_DICE, arg1.."-"..arg2)  --/r 心理 学 <==> /r 心理-学
         end
-        return _G.subfmt(charlang.NR, {
+        return _G.subfmt(charLang.NR, {
                 R_NAME = name,
                 EXP = string.format("%s=%d", exp, ParseDiceExp(exp)),
             })  --/r 1D100 心理学
     else
         local temp = arg1 or arg2
         if ParseDiceExp(temp) then
-            return _G.subfmt(charlang.R, {
+            return _G.subfmt(charLang.R, {
                 EXP = string.format("%s=%d", temp, ParseDiceExp(temp)),
             })  --/r 1D100
         else
@@ -47,7 +47,7 @@ end
 
 -- /rh
 function GetRhString( charName, arg1, arg2 )
-    local charlang = GetCharLang(charName)
+    local charLang = GetCharLang(charName)
 
     if not (arg1 or arg2) then
         return GetRhString(charName, DEFAULT_DICE)  --/rh <==> /rh 1D100
@@ -62,19 +62,19 @@ function GetRhString( charName, arg1, arg2 )
         else
             return GetRhString(charName, DEFAULT_DICE, arg1.."-"..arg2)  --/rh 心理 学 <==> /rh 心理-学
         end
-        return _G.subfmt(charlang.NRH, {
+        return _G.subfmt(charLang.NRH, {
             R_NAME = name,
             EXP = exp,
-        }), _G.subfmt(charlang.NRHR, {
+        }), _G.subfmt(charLang.NRHR, {
             R_NAME = name,
             EXP = string.format("%s=%d", exp, ParseDiceExp(exp)),
         })  --/rh 1D100 心理学
     else
         local temp = arg1 or arg2
         if ParseDiceExp(temp) then
-            return _G.subfmt(charlang.RH, {
+            return _G.subfmt(charLang.RH, {
                 EXP = temp,
-            }), _G.subfmt(charlang.RHR, {
+            }), _G.subfmt(charLang.RHR, {
                 EXP = string.format("%s=%d", temp, ParseDiceExp(temp)),
             })  --/rh 1D100
         else
