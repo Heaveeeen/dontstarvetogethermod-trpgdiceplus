@@ -4,6 +4,8 @@ modimport("lang/lang-" .. Lang .. ".lua")
 local TRPGRule = GetModConfigData("TRPG_RULE")
 modimport("dice/dice-" .. TRPGRule .. ".lua")
 
+MSG_PREFIX = "\238\132\130"
+
 
 
 local RuleInfo = RULE_INFO[TRPGRule]._
@@ -24,6 +26,6 @@ GLOBAL.AddModUserCommand("rule", "rule", {
     paramsoptional = {},
     vote = false,
     localfn = function(params, caller)
-        GLOBAL.TheNet:Announce("[TRPG Dice +]\238\132\130\n"..RuleInfo)
+        GLOBAL.TheNet:Say("(/rule)"..MSG_PREFIX.."\n"..RuleInfo)
     end,
 })

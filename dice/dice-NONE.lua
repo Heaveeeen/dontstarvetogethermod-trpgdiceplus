@@ -10,6 +10,9 @@ local function GetCharLang( name )
     return (annstyle == "CHARACTER" and name) and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
 end
 
+
+
+-- /r
 function GetRString( charName, arg1, arg2 )
     local charlang = GetCharLang(charName)
 
@@ -42,6 +45,7 @@ function GetRString( charName, arg1, arg2 )
     end
 end
 
+-- /rh
 function GetRhString( charName, arg1, arg2 )
     local charlang = GetCharLang(charName)
 
@@ -98,14 +102,15 @@ _G.AddModUserCommand("r", "r", {
     paramsoptional = { true, true },
     vote = false,
     localfn = function(params, caller)
+        local rstring = GetRString(caller.prefab, params.arg1, params.arg2)
         if displaycmd then
             _G.TheNet:Say("(/r"..
-                (params.arg1 and " " .. params.arg1 or "") ..
-                (params.arg2 and " " .. params.arg2 or "") .. ")\238\132\130" ..
-                GetRString(caller.prefab, params.arg1, params.arg2)
+                (params.arg1 and " " .. params.arg1 or "")..
+                (params.arg2 and " " .. params.arg2 or "")..")"..
+                MSG_PREFIX..rstring
             )
         else
-            _G.TheNet:Say("\238\132\130"..GetRString(caller.prefab, params.arg1, params.arg2))
+            _G.TheNet:Say(MSG_PREFIX..rstring)
         end
     end,
 })
@@ -123,18 +128,18 @@ _G.AddModUserCommand("rh", "rh", {
     paramsoptional = { true, true },
     vote = false,
     localfn = function(params, caller)
-        local rhmsg,rhrmsg = GetRhString(caller.prefab, params.arg1, params.arg2)
+        local rhstring,rhrstring = GetRhString(caller.prefab, params.arg1, params.arg2)
 
         if displaycmd then
             _G.TheNet:Say("(/rh"..
                 (params.arg1 and " " .. params.arg1 or "")..
-                (params.arg2 and " " .. params.arg2 or "")..
-                ")\238\132\130" ..rhmsg
+                (params.arg2 and " " .. params.arg2 or "")..")"..
+                MSG_PREFIX..rhstring
             )
         else
-            _G.TheNet:Say(GetRhString("\238\132\130"..rhmsg))
+            _G.TheNet:Say(GetRhString(MSG_PREFIX..rhstring))
         end
         
-        _G.ChatHistory:AddToHistory(_G.ChatTypes.Message, nil, nil, "[Trpg Dice +]", rhrmsg, { 0.7, 0.7, 0.7, 1, }, nil, nil, true)
+        _G.ChatHistory:AddToHistory(_G.ChatTypes.Message, nil, nil, "[Trpg Dice +]", rhrstring, { 0.7, 0.7, 0.7, 1, }, nil, nil, true)
     end,
 })

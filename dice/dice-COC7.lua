@@ -88,8 +88,8 @@ local statueAlias =
 local function Dealias( name )
     for i,x in ipairs(statueAlias) do
         for j,y in ipairs(x) do
-            if y == name then
-                return x[1]
+            if y == string.lower(name) then
+                return string.lower(x[1])
             end
         end
     end
@@ -100,21 +100,101 @@ _G.setmetatable(status, {
     __index = function( t, k )
         return defaultStatus[Dealias(k)] or 0
     end,
-
-    __newindex = function( t, k, v )
-        t[Dealias(k)] = v
-    end,
 })
 
 local function GetStatue( name )
     return status[Dealias(name)]
 end
 
+local function SetStatue( name, value )
+    status[Dealias(name)] = _G.tonumber(value)
+end
+
+local function ChangeStatue( name, value )
+    local n = Dealias(name)
+    if _G.tonumber(status[n]) then
+        status[n] = status[n] + _G.tonumber(value)
+    end
+end
+
+local function ClearStatue()
+    status = {}
+end
+
 local function GetCharLang( name )
     return (annstyle == "CHARACTER" and name) and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
 end
 
-local function GetRaString( charName, arg1, arg2, arg3 )
+
+
+--------------
+--    ST    --
+--------------
+
+function COC7_GetStString( charName, arg1, arg2 )
+    local charlang = GetCharLang(charName)
+
+    if arg2 then
+        if string.lower(arg1) == "show" then
+            return _G.subfmt(charlang.ST_SHOW, {
+                ST_NAME = arg2,
+                ST_VALUE = GetStatue(arg2),
+            })  --/st show san
+        else
+            return nil
+        end
+    else
+        if string.match(arg1, "%D+%d+") then
+            local count = 0
+            local temptable = {}
+
+            for name,value in string.gmatch(arg1, "(%D+)(%d+)") do
+                count = count + 1
+                local operator = string.match(string.sub(name, -1), "[%+%-]")
+                if operator then
+                    name = string.sub(name, 1, -2)
+                end
+                if name ~= "" and not string.match(string.sub(name, -1), "[%+%-]") then
+                    temptable[name] = { op = operator, v = _G.tonumber(value), }
+                else
+                    return _G.subfmt(charlang.ST_ERROR, {
+                        ST_ERR_NUM = count,
+                        ST_ERR_CODE = name..(operator or "")..value,
+                    })  --用/st设置属性时格式出错
+                end
+            end
+
+            for name,args in pairs(temptable) do
+                if args.op then
+                    ChangeStatue(name, args.op == "+" and args.v or -1 * args.v)
+                else
+                    SetStatue(name, args.v)
+                end
+                if GetStatue(name) < 0 then 
+                    SetStatue(name, 0)
+                end
+            end
+
+            return _G.subfmt(charlang.ST, {
+                ST_AMOUNT = _G.tostring(count),
+            })  --/st 力量50体质50xxxxxxxx; /st san-5hp+2
+
+        elseif (string.lower(arg1) == "clear") or (string.lower(arg1) == "init") then
+            ClearStatue()
+            return charlang.ST_CLEAR  --/st clear; /st init (clear和init不区分大小写)
+        else
+            return nil
+        end
+    end
+end
+
+
+
+---------------
+--  RA / RC  --
+---------------
+
+function COC7_GetRaString( charName, arg1, arg2, arg3 )
     local charlang = GetCharLang(charName)
     local name,stvalue,bp = nil,0,0
 
@@ -266,16 +346,44 @@ end
 
 
 
+_G.AddModUserCommand("st", "st", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "arg1", "arg2" },
+    paramsoptional = { false, true },
+    vote = false,
+    localfn = function(params, caller)
+        local ststring = COC7_GetStString(caller.prefab, params.arg1, params.arg2)
+        if not ststring then
+            return nil
+        end
+        if displaycmd then
+            _G.TheNet:Say("(/st"..
+                (params.arg1 and " " .. params.arg1 or "")..
+                (params.arg2 and " " .. params.arg2 or "")..")"..
+                MSG_PREFIX..ststring
+            )
+        else
+            _G.TheNet:Say(MSG_PREFIX..ststring)
+        end
+    end,
+})
+
 local function ralocalfn( params, caller, cmdname )
+    local rastring = COC7_GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3)
     if displaycmd then
         _G.TheNet:Say("(/"..cmdname..
             (params.arg1 and " " .. params.arg1 or "")..
             (params.arg2 and " " .. params.arg2 or "")..
-            (params.arg3 and " " .. params.arg3 or "")..")\238\132\130"..
-            GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3)
+            (params.arg3 and " " .. params.arg3 or "")..")"..
+            MSG_PREFIX..rastring
         )
     else
-        _G.TheNet:Say("\238\132\130"..GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3))
+        _G.TheNet:Say(MSG_PREFIX..rastring)
     end
 end
 
