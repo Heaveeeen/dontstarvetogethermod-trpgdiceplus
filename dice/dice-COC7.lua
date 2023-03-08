@@ -389,7 +389,7 @@ function COC7_GetScString( charName, scValue )
                 str = charLang.SC..charLang.SC_SUCCESS
             end
             res2 = ParseDiceExp(sanExp)
-            local exp2 = string.format("%s=%d/%d", sanExp, res2, GetStatue("san"))
+            local exp2 = string.format("%s=%d", sanExp, res2)
 
             ChangeStatue("san", -1 * res2)
             return _G.subfmt(str, {
