@@ -45,18 +45,18 @@ configuration_options =
     {
         name = "ANNOUNCE_STYLE",
         label = "提示语风格",
-        hover = "你希望骰子用哪种风格说话？",
+        hover = "你希望角色在掷骰子时用哪种风格说话？",
         options =
         {
-            {description = "默认", data = "DEFAULT", hover = "掷骰时角色会以不加任何修辞的、朴实无华的方式说话。"},
             {description = "角色", data = "CHARACTER", hover = "每个角色都拥有自己独特的说话风格。"},
+            {description = "基础", data = "DEFAULT", hover = "掷骰时角色会以不加任何修辞的、朴实无华的方式说话。"},
         },
-        default = "DEFAULT",
+        default = "CHARACTER",
     },
     {
         name = "DISPLAY_COMMAND",
         label = "显示掷骰指令",
-        hover = "你想看到玩家输入的“/ra 侦查”这些指令吗？",
+        hover = "你想看到玩家输入的“/r 2D6”等指令吗？",
         options =
         {
             {description = "是", data = true, hover = "掷骰的提示语会附带显示玩家输入的掷骰指令。"},

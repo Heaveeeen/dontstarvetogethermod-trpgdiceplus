@@ -5,6 +5,7 @@ local _G = GLOBAL
 
 local roomrule = GetModConfigData("COC_SUB_RULE")
 local displaycmd = GetModConfigData("DISPLAY_COMMAND")
+local annstyle = GetModConfigData("ANNOUNCE_STYLE")
 
 local status = {}
 
@@ -110,7 +111,7 @@ local function GetStatue( name )
 end
 
 local function GetCharLang( name )
-    return name and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
+    return (annstyle == "CHARACTER" and name) and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
 end
 
 local function GetRString( charName, arg1, arg2 )
@@ -252,7 +253,7 @@ local function GetRaString( charName, arg1, arg2, arg3 )
             else
                 return false
             end
-        else --if roomrule == 0 then
+        elseif roomrule == 0 then
             if r == 1 then
                 return 6  --大成功
             elseif s < 50 and r > 95 then
@@ -322,16 +323,16 @@ _G.AddModUserCommand("r", "r", {
 
 
 
-local function ralocalfn(params, caller)
+local function ralocalfn( params, caller, cmdname )
     if displaycmd then
-        _G.TheNet:Say("(/ra"..
+        _G.TheNet:Say("(/"..cmdname..
             (params.arg1 and " " .. params.arg1 or "") ..
             (params.arg2 and " " .. params.arg2 or "") ..
             (params.arg3 and " " .. params.arg3 or "") .. ")\238\132\130" ..
             GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3)
         )
     else
-        _G.TheNet:Say(GetRString(caller.prefab, params.arg1, params.arg2, params.arg3))
+        _G.TheNet:Say(GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3))
     end
 end
 
@@ -345,7 +346,9 @@ _G.AddModUserCommand("ra", "ra", {
     params = { "arg1", "arg2", "arg3" },
     paramsoptional = { true, true, true },
     vote = false,
-    localfn = ralocalfn,
+    localfn = function( params, caller )
+        ralocalfn( params, caller, "ra" )
+    end,
 })
 
 _G.AddModUserCommand("rc", "rc", {
@@ -358,5 +361,7 @@ _G.AddModUserCommand("rc", "rc", {
     params = { "arg1", "arg2", "arg3" },
     paramsoptional = { true, true, true },
     vote = false,
-    localfn = ralocalfn,
+    localfn = function( params, caller )
+        ralocalfn( params, caller, "rc" )
+    end,
 })
