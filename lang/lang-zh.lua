@@ -297,3 +297,26 @@ local LangMetatable =
 }
 
 GLOBAL.setmetatable(COC_DICE_LANG, LangMetatable)
+
+
+RULE_INFO = 
+{
+    COC7 =
+    {
+        _ = "- 规则: COC7 / 克苏鲁的呼唤第7版\n- 房规: {COC_SUB_RULE}\n- 语言: 中文",
+        COC_SUB_RULE =
+        {
+            "0 ( 符合COC7规则书, 出1大成功, 不满50出96-100大失败, 满50出100大失败 )",
+            "1",
+            "2",
+            "3 ( 出1-5大成功, 出96-100大失败 )",
+            "4",
+            "5",
+        },
+    },
+
+    NONE =
+    {
+        _ = "- 规则: 无（仅包含基础掷骰和暗骰功能）\n- 语言: 中文"
+    }
+}

@@ -27,7 +27,7 @@ configuration_options =
         options = 
         {
             {description = "COC7", data = "COC7", hover = "采用克苏鲁的呼唤7版规则"},
-            {description = "无", data = "NONE", hover = "仅包含基础掷骰功能"},
+            {description = "无", data = "NONE", hover = "仅包含基础掷骰和暗骰功能"},
         },
         default = "COC7",
     },
