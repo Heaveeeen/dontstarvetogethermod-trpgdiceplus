@@ -382,11 +382,11 @@ function COC7_GetScString( charName, scValue )
 
             local res2,str,sanExp = 0,"",""
             if res1 > GetStatue("san") then
-                sanExp = ss
-                str = charLang.SC..charLang.SC_SUCCESS
-            else
                 sanExp = sf
                 str = charLang.SC..charLang.SC_FAIL
+            else
+                sanExp = ss
+                str = charLang.SC..charLang.SC_SUCCESS
             end
             res2 = ParseDiceExp(sanExp)
             local exp2 = string.format("%s=%d/%d", sanExp, res2, GetStatue("san"))
@@ -399,6 +399,34 @@ function COC7_GetScString( charName, scValue )
             })
         end
     end
+end
+
+
+
+---------------
+--  TI & LI  --
+---------------
+
+function COC7_GetInsString( charName, type )
+    local charLang = GetCharLang(charName)
+
+    local res1 = ParseDiceExp("1D10")
+    local res2 = ParseDiceExp("1D10")
+
+    local exp1 = string.format("1D10=%d", res1)  --症状
+    local exp2 = string.format("1D10=%d", res2)  --持续时间
+
+    local ins_name = COC_DICE_LANG._[type].NAME[res1]
+    local ins_des = _G.subfmt(COC_DICE_LANG._[type].DES[res1], {
+        CHAR_NAME = charLang.INS_CHAR_NAME
+    })
+
+    return _G.subfmt(charLang[type], {
+        EXP = exp1,
+        EXP_2 = exp2,
+        INS_NAME = ins_name,
+        INS_DES = ins_des,
+    })
 end
 
 
@@ -503,5 +531,41 @@ _G.AddModUserCommand("sc", "sc", {
         else
             _G.TheNet:Say(MSG_PREFIX..scstring)
         end
+    end,
+})
+
+_G.AddModUserCommand("ti", "ti", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = {},
+    paramsoptional = {},
+    vote = false,
+    localfn = function(params, caller)
+        _G.TheNet:Say(
+            (displaycmd and "(/ti)" or "")..
+            MSG_PREFIX..COC7_GetInsString(caller.prefab, "TI")
+        )
+    end,
+})
+
+_G.AddModUserCommand("li", "li", {
+    prettyname = nil,
+    desc = nil,
+    permission = _G.COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = {},
+    paramsoptional = {},
+    vote = false,
+    localfn = function(params, caller)
+        _G.TheNet:Say(
+            (displaycmd and "(/li)" or "")..
+            MSG_PREFIX..COC7_GetInsString(caller.prefab, "LI")
+        )
     end,
 })
