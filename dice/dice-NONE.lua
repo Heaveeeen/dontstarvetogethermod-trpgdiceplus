@@ -12,7 +12,10 @@ end
 
 
 
--- /r
+-------------
+--    R    --
+-------------
+
 function GetRString( charName, arg1, arg2 )
     local charLang = GetCharLang(charName)
 
@@ -45,7 +48,12 @@ function GetRString( charName, arg1, arg2 )
     end
 end
 
--- /rh
+
+
+--------------
+--    RH    --
+--------------
+
 function GetRhString( charName, arg1, arg2 )
     local charLang = GetCharLang(charName)
 
@@ -104,13 +112,13 @@ _G.AddModUserCommand("r", "r", {
     localfn = function(params, caller)
         local rstring = GetRString(caller.prefab, params.arg1, params.arg2)
         if displaycmd then
-            _G.TheNet:Say("(/r"..
+            Say("(/r"..
                 (params.arg1 and " " .. params.arg1 or "")..
                 (params.arg2 and " " .. params.arg2 or "")..")"..
                 MSG_PREFIX..rstring
             )
         else
-            _G.TheNet:Say(MSG_PREFIX..rstring)
+            Say(MSG_PREFIX..rstring)
         end
     end,
 })
@@ -131,15 +139,15 @@ _G.AddModUserCommand("rh", "rh", {
         local rhstring,rhrstring = GetRhString(caller.prefab, params.arg1, params.arg2)
 
         if displaycmd then
-            _G.TheNet:Say("(/rh"..
+            Say("(/rh"..
                 (params.arg1 and " " .. params.arg1 or "")..
                 (params.arg2 and " " .. params.arg2 or "")..")"..
                 MSG_PREFIX..rhstring
             )
         else
-            _G.TheNet:Say(GetRhString(MSG_PREFIX..rhstring))
+            Say(GetRhString(MSG_PREFIX..rhstring))
         end
         
-        _G.ChatHistory:AddToHistory(_G.ChatTypes.Message, nil, nil, "[Trpg Dice +]", rhrstring, { 0.7, 0.7, 0.7, 1, }, nil, nil, true)
+        LocalSay(MSG_PREFIX..rhrstring)
     end,
 })

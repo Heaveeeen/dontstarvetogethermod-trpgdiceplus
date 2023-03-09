@@ -453,13 +453,13 @@ _G.AddModUserCommand("st", "st", {
             return nil
         end
         if displaycmd then
-            _G.TheNet:Say("(/st"..
+            Say("(/st"..
                 (params.arg1 and " " .. params.arg1 or "")..
                 (params.arg2 and " " .. params.arg2 or "")..")"..
                 MSG_PREFIX..ststring
             )
         else
-            _G.TheNet:Say(MSG_PREFIX..ststring)
+            Say(MSG_PREFIX..ststring)
         end
     end,
 })
@@ -467,14 +467,14 @@ _G.AddModUserCommand("st", "st", {
 local function ralocalfn( params, caller, cmdname )
     local rastring = COC7_GetRaString(caller.prefab, params.arg1, params.arg2, params.arg3)
     if displaycmd then
-        _G.TheNet:Say("(/"..cmdname..
+        Say("(/"..cmdname..
             (params.arg1 and " " .. params.arg1 or "")..
             (params.arg2 and " " .. params.arg2 or "")..
             (params.arg3 and " " .. params.arg3 or "")..")"..
             MSG_PREFIX..rastring
         )
     else
-        _G.TheNet:Say(MSG_PREFIX..rastring)
+        Say(MSG_PREFIX..rastring)
     end
 end
 
@@ -524,12 +524,12 @@ _G.AddModUserCommand("sc", "sc", {
             return nil
         end
         if displaycmd then
-            _G.TheNet:Say("(/sc"..
+            Say("(/sc"..
                 (params.value and " " .. params.value or "")..")"..
                 MSG_PREFIX..scstring
             )
         else
-            _G.TheNet:Say(MSG_PREFIX..scstring)
+            Say(MSG_PREFIX..scstring)
         end
     end,
 })
@@ -545,7 +545,7 @@ _G.AddModUserCommand("ti", "ti", {
     paramsoptional = {},
     vote = false,
     localfn = function(params, caller)
-        _G.TheNet:Say(
+        Say(
             (displaycmd and "(/ti)" or "")..
             MSG_PREFIX..COC7_GetInsString(caller.prefab, "TI")
         )
@@ -563,7 +563,7 @@ _G.AddModUserCommand("li", "li", {
     paramsoptional = {},
     vote = false,
     localfn = function(params, caller)
-        _G.TheNet:Say(
+        Say(
             (displaycmd and "(/li)" or "")..
             MSG_PREFIX..COC7_GetInsString(caller.prefab, "LI")
         )
