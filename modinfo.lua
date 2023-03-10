@@ -1,4 +1,4 @@
-name = "TRPG掷骰增强(alpha)"
+name = "TRPG掷骰增强"
 description = [[
 加入多种掷骰指令以辅助在饥荒中玩TRPG（桌上角色扮演游戏，俗称跑团）
 目前仅支持COC7一种规则。
@@ -15,9 +15,14 @@ dont_starve_compatible = false
 reign_of_giants_compatible = false
 shipwrecked_compatible = false
 
+--server
 server_only_mod = true
 client_only_mod = false
 all_clients_require_mod = true
+--client
+--server_only_mod = false
+--client_only_mod = true
+--all_clients_require_mod = false
 
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
