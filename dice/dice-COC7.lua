@@ -54,7 +54,7 @@ local function SetDefaultStatue( name, value )
 end
 
 local function GetDefaultStatue( name )
-    return defaultStatus[Dealias(name)]
+    return defaultStatus[Dealias(name)] or 0
 end
 
 SetDefaultStatue("会计", 5)
@@ -132,7 +132,7 @@ SetDefaultStatue("炮术", 1)
 
 setmetatable(status, {
     __index = function( t, k )
-        return GetDefaultStatue(k) or 0
+        return GetDefaultStatue(k)
     end,
 })
 
@@ -142,13 +142,13 @@ end
 
 local function SetStatue( name, value )
     status[Dealias(name)] = tonumber(value)
+    if GetStatue(name) < 0 then
+        SetStatue(name, 0)
+    end
 end
 
 local function ChangeStatue( name, value )
-    local n = Dealias(name)
-    if tonumber(status[n]) then
-        status[n] = status[n] + tonumber(value)
-    end
+    SetStatue(name, GetStatue(name) + tonumber(value))
 end
 
 local function ClearStatue()
@@ -188,7 +188,7 @@ function COC7_GetStString( charName, arg1, arg2 )
             
             local str = ""
             for i,v in pairs(changedStatus) do  --其实这个循环完全可以在上一个循环里一并搞定的，但我保险起见还是拆成了两次循环
-                str = string.format("%s; %s%d", str, i, v)
+                str = string.format("%s%s%d; ", str, i, v)
             end
             return str, "show"
         elseif string.match(arg1, "%D+%d+") then
@@ -438,7 +438,8 @@ function COC7_GetInsString( charName, type )
 
     local ins_name = COC7_DICE_LANG._[type].NAME[res1]
     local ins_des = subfmt(COC7_DICE_LANG._[type].DES[res1], {
-        CHAR_NAME = charLang.INS_CHAR_NAME
+        PRON_PER = charLang.PRON_PER,
+        PRON_POS = charLang.PRON_POS,
     })
 
     return subfmt(charLang[type], {
@@ -447,6 +448,42 @@ function COC7_GetInsString( charName, type )
         INS_NAME = ins_name,
         INS_DES = ins_des,
     })
+end
+
+
+
+---------------
+--    COC    --
+---------------
+
+function COC7_GetCocString( amount )
+    local a = tonumber(amount) or 1
+
+    local function GetRandomStatus()
+        local t = {
+            STR = ParseDiceExp("3D6*5"),
+            CON = ParseDiceExp("3D6*5"),
+            SIZ = ParseDiceExp("(2D6+6)*5"),
+            DEX = ParseDiceExp("3D6*5"),
+            APP = ParseDiceExp("3D6*5"),
+            INT = ParseDiceExp("(2D6+6)*5"),
+            POW = ParseDiceExp("3D6*5"),
+            EDU = ParseDiceExp("(2D6+6)*5"),
+            LUCK = ParseDiceExp("3D6*5"),
+        }
+        t.TOTAL = t.STR + t.CON + t.SIZ + t.DEX + t.APP + t.INT + t.POW + t.EDU
+        t.TOTAL_LUCK = t.TOTAL + t.LUCK
+        t.HP = math.floor((t.CON + t.SIZ) / 10)
+        t.MP = math.floor(t.POW / 5)
+        return t
+    end
+
+    res = {}
+    for i=1,a do
+        res[i] = subfmt(COC7_DICE_LANG._.COC, GetRandomStatus())
+    end
+
+    return res
 end
 
 
@@ -591,5 +628,30 @@ AddModUserCommand("li", "li", {
             (displaycmd and "(/li)" or "")..
             MSG_PREFIX..COC7_GetInsString(caller.prefab, "LI")
         )
+    end,
+})
+
+AddModUserCommand("coc", "coc", {
+    prettyname = nil,
+    desc = nil,
+    permission = COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "amount" },
+    paramsoptional = { true },
+    vote = false,
+    localfn = function(params, caller)
+        local cocstrings = COC7_GetCocString(params.amount)
+        for i,v in ipairs(cocstrings) do
+            if displaycmd then
+                Say("(/coc"..
+                    (params.amount and " " .. params.amount or "")..")"..
+                    MSG_PREFIX..v
+                )
+            else
+                Say(MSG_PREFIX..v)
+            end
+        end
     end,
 })

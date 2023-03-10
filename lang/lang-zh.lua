@@ -43,6 +43,8 @@ COC7_DICE_LANG =
                 "{PRON_PER}患上一个新的躁狂症。在躁狂症状表上骰1D100来决定症状, 或由守秘人选择一个",
             },
         },
+
+        COC = "- 力量:{STR}, 体质:{CON}, 体型:{SIZ}, 敏捷:{DEX}, 外貌:{APP}, 智力:{INT}, 意志:{POW}, 教育:{EDU}, 幸运:{LUCK};\n总计:{TOTAL}/{TOTAL_LUCK}; hp:{HP}, mp:{MP}。"
     },
 
     DEFAULT =
@@ -131,7 +133,7 @@ COC7_DICE_LANG =
         WOODIE          伍迪
         WES             韦斯
         WAXWELL         老麦
-        WIGFRID         女武神
+        WATHGRITHR      女武神
         WEBBER          韦伯
         WINONA          女工
         WARLY           沃利
@@ -323,8 +325,8 @@ COC7_DICE_LANG =
         },
 
         SC = "检测到CPU受损, 损害等级: {SC_VALUE}, 评估损伤状态: {EXP}, ",
-        SC_SUCCESS = "轻度损伤: 损伤精确值 \"SAN - {EXP_2}\" 。",
-        SC_FAIL = "重度损伤: CPU过热! 系统故障: 故障码 \"SAN - {EXP_2}\"",
+        SC_SUCCESS = "轻度损伤: 损伤精确值: \"SAN-减少{EXP_2}单位\" 。",
+        SC_FAIL = "重度损伤: CPU过热! 系统故障, 故障信息: \"SAN-减少{EXP_2}单位\"",
 
         PRON_PER = "系统",
         PRON_POS = "我的",
@@ -484,7 +486,7 @@ COC7_DICE_LANG =
         LI = "它们刚才与我交流了: {EXP}, 我经历了{INS_NAME}, {INS_DES}。大约已经过去{EXP_2}小时了。",
     },
 
-    WIGFRID =
+    WATHGRITHR =  --WIGFRID
     {
         R = "愿诺恩们祝福你: {EXP}!",
         NR = "愿诺恩们、众神和{R_NAME}祝福你: {EXP}。",
@@ -817,8 +819,8 @@ COC7_DICE_LANG =
         },
 
         SC = "不! 我不会让黑暗带走我 ({SC_VALUE}) !! {EXP}, ",
-        SC_SUCCESS = "他们找到我了……不——不! 走开! 我失去了{EXP_2}点SAN!",
-        SC_FAIL = "哎呦……嗷, 麻烦呐, 我损失了{EXP_2}点SAN。",
+        SC_SUCCESS = "哎呦……嗷, 麻烦呐, 我损失了{EXP_2}点SAN。",
+        SC_FAIL = "他们找到我了……不——不! 走开! 我失去了{EXP_2}点SAN!",
 
         PRON_PER = "我",
         PRON_POS = "我的",
@@ -854,7 +856,8 @@ DICE_HELP_LANG =
     _HELP = [[
 [TRPG掷骰增强 (TRPG Dice +) ]
 输入 /dicehelp 来获取帮助。
-输入 /dicehelp <指令名> 获得更详细的帮助 (例: /dicehelp rh)。\n]],
+输入 /dicehelp <指令名> 获得更详细的帮助 (例: /dicehelp rh)。
+]],
 
     COC7 =
     {
@@ -866,6 +869,7 @@ DICE_HELP_LANG =
 /sc : 理智检定
 /ti : 疯狂发作-即时症状
 /li : 疯狂发作-总结症状
+/coc : 生成随机的人物属性值
 /rule : 查看房规]],
 
         ST = [[
@@ -876,11 +880,11 @@ DICE_HELP_LANG =
 - /st 力量60体质50体型55san-2hp+1
 --------------------------------
 /st show <属性名>
-获取一个或全部属性的当前值。
-属性名是可选的，留空则会列出所有与默认值不同的属性，例：
-- /st show
+获取一个或全部属性的当前值。例：
 - /st show 图书馆
 - /st show 魔法值
+属性名是可选的，留空则会列出所有与默认值不同的属性，例：
+- /st show
 --------------------------------
 /st clear
 /st init
@@ -905,12 +909,20 @@ DICE_HELP_LANG =
 - /sc 0/1d6
 - /sc 1D3+1/2D10]],
 
-        INS = [[
+        TI = [[
 /ti
-抽取一个疯狂发作即时症状并给出持续时间。
---------------------------------
+抽取一个疯狂发作 即时 症状并给出持续时间。]],
+
+        LI = [[
 /li
-与 /ti 类似，但抽取的是总结症状。]],
+抽取一个疯狂发作 总结 症状并给出持续时间。]],
+
+        COC = [[
+/coc <数量>
+随机生成一套或多套人物属性值供参考。
+数量是可选的，默认为1。例：
+- /coc
+- /coc 5]],
     },
 
     NONE =
