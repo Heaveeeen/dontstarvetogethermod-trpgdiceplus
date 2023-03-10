@@ -6,7 +6,7 @@ local displaycmd = GetModConfigData("DISPLAY_COMMAND")
 local annstyle = GetModConfigData("ANNOUNCE_STYLE")
 
 local function GetCharLang( name )
-    return (annstyle == "CHARACTER" and name) and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
+    return (annstyle == "CHARACTER" and name) and COC7_DICE_LANG[string.upper(name)] or COC7_DICE_LANG.DEFAULT
 end
 
 

@@ -6,80 +6,6 @@ local annstyle = GetModConfigData("ANNOUNCE_STYLE")
 
 local status = {}
 
-local defaultStatus = {}
-defaultStatus["会计"] = 5
-defaultStatus["人类学"] = 1
-defaultStatus["估价"] = 5
-defaultStatus["考古学"] = 1
-defaultStatus["取悦"] = 15
-defaultStatus["攀爬"] = 20
-defaultStatus["计算机使用"] = 5
-defaultStatus["乔装"] = 5
-defaultStatus["汽车驾驶"] = 20
-defaultStatus["电气维修"] = 10
-defaultStatus["电子学"] = 1
-defaultStatus["话术"] = 5
-defaultStatus["斗殴"] = 25
-defaultStatus["斧"] = 15
-defaultStatus["链锯"] = 10
-defaultStatus["连枷"] = 10
-defaultStatus["绞索"] = 15
-defaultStatus["矛"] = 20
-defaultStatus["剑"] = 20
-defaultStatus["鞭"] = 5
-defaultStatus["手枪"] = 20
-defaultStatus["弓"] = 15
-defaultStatus["重武器"] = 10
-defaultStatus["火焰喷射器"] = 10
-defaultStatus["机枪"] = 10
-defaultStatus["步枪"] = 25
-defaultStatus["冲锋枪"] = 15
-defaultStatus["急救"] = 30
-defaultStatus["历史"] = 5
-defaultStatus["恐吓"] = 15
-defaultStatus["跳跃"] = 20
-defaultStatus["法律"] = 5
-defaultStatus["图书馆使用"] = 20
-defaultStatus["聆听"] = 20
-defaultStatus["锁匠"] = 1
-defaultStatus["机械维修"] = 10
-defaultStatus["医学"] = 1
-defaultStatus["博物学"] = 10
-defaultStatus["领航"] = 10
-defaultStatus["神秘学"] = 5
-defaultStatus["操作重型机械"] = 1
-defaultStatus["说服"] = 10
-defaultStatus["驾驶"] = 1
-defaultStatus["精神分析"] = 1
-defaultStatus["心理学"] = 10
-defaultStatus["骑术"] = 5
-defaultStatus["天文学"] = 1
-defaultStatus["生物学"] = 1
-defaultStatus["植物学"] = 1
-defaultStatus["化学"] = 1
-defaultStatus["密码学"] = 1
-defaultStatus["工程学"] = 1
-defaultStatus["司法科学"] = 1
-defaultStatus["地质学"] = 1
-defaultStatus["数学"] = 10
-defaultStatus["气象学"] = 1
-defaultStatus["药学"] = 1
-defaultStatus["物理学"] = 1
-defaultStatus["动物学"] = 1
-defaultStatus["妙手"] = 10
-defaultStatus["侦查"] = 25
-defaultStatus["潜行"] = 20
-defaultStatus["生存"] = 10
-defaultStatus["游泳"] = 20
-defaultStatus["投掷"] = 20
-defaultStatus["追踪"] = 10
-defaultStatus["驯兽"] = 5
-defaultStatus["潜水"] = 1
-defaultStatus["爆破"] = 1
-defaultStatus["读唇"] = 1
-defaultStatus["催眠"] = 1
-defaultStatus["炮术"] = 1
-
 local statueAlias =
 {   --别名表中的第一项视为标准名，建议不要随意更改第一项
     --此表也可以用于本地化
@@ -121,9 +47,92 @@ local function Dealias( name )
     return name
 end
 
+local defaultStatus = {}
+
+local function SetDefaultStatue( name, value )
+    defaultStatus[Dealias(name)] = value
+end
+
+local function GetDefaultStatue( name )
+    return defaultStatus[Dealias(name)]
+end
+
+SetDefaultStatue("会计", 5)
+SetDefaultStatue("人类学", 1)
+SetDefaultStatue("估价", 5)
+SetDefaultStatue("考古学", 1)
+SetDefaultStatue("取悦", 15)
+SetDefaultStatue("攀爬", 20)
+SetDefaultStatue("计算机使用", 5)
+SetDefaultStatue("乔装", 5)
+SetDefaultStatue("汽车驾驶", 20)
+SetDefaultStatue("电气维修", 10)
+SetDefaultStatue("电子学", 1)
+SetDefaultStatue("话术", 5)
+SetDefaultStatue("斗殴", 25)
+SetDefaultStatue("斧", 15)
+SetDefaultStatue("链锯", 10)
+SetDefaultStatue("连枷", 10)
+SetDefaultStatue("绞索", 15)
+SetDefaultStatue("矛", 20)
+SetDefaultStatue("剑", 20)
+SetDefaultStatue("鞭", 5)
+SetDefaultStatue("手枪", 20)
+SetDefaultStatue("弓", 15)
+SetDefaultStatue("重武器", 10)
+SetDefaultStatue("火焰喷射器", 10)
+SetDefaultStatue("机枪", 10)
+SetDefaultStatue("步枪", 25)
+SetDefaultStatue("冲锋枪", 15)
+SetDefaultStatue("急救", 30)
+SetDefaultStatue("历史", 5)
+SetDefaultStatue("恐吓", 15)
+SetDefaultStatue("跳跃", 20)
+SetDefaultStatue("法律", 5)
+SetDefaultStatue("图书馆使用", 20)
+SetDefaultStatue("聆听", 20)
+SetDefaultStatue("锁匠", 1)
+SetDefaultStatue("机械维修", 10)
+SetDefaultStatue("医学", 1)
+SetDefaultStatue("博物学", 10)
+SetDefaultStatue("领航", 10)
+SetDefaultStatue("神秘学", 5)
+SetDefaultStatue("操作重型机械", 1)
+SetDefaultStatue("说服", 10)
+SetDefaultStatue("驾驶", 1)
+SetDefaultStatue("精神分析", 1)
+SetDefaultStatue("心理学", 10)
+SetDefaultStatue("骑术", 5)
+SetDefaultStatue("天文学", 1)
+SetDefaultStatue("生物学", 1)
+SetDefaultStatue("植物学", 1)
+SetDefaultStatue("化学", 1)
+SetDefaultStatue("密码学", 1)
+SetDefaultStatue("工程学", 1)
+SetDefaultStatue("司法科学", 1)
+SetDefaultStatue("地质学", 1)
+SetDefaultStatue("数学", 10)
+SetDefaultStatue("气象学", 1)
+SetDefaultStatue("药学", 1)
+SetDefaultStatue("物理学", 1)
+SetDefaultStatue("动物学", 1)
+SetDefaultStatue("妙手", 10)
+SetDefaultStatue("侦查", 25)
+SetDefaultStatue("潜行", 20)
+SetDefaultStatue("生存", 10)
+SetDefaultStatue("游泳", 20)
+SetDefaultStatue("投掷", 20)
+SetDefaultStatue("追踪", 10)
+SetDefaultStatue("驯兽", 5)
+SetDefaultStatue("潜水", 1)
+SetDefaultStatue("爆破", 1)
+SetDefaultStatue("读唇", 1)
+SetDefaultStatue("催眠", 1)
+SetDefaultStatue("炮术", 1)
+
 setmetatable(status, {
     __index = function( t, k )
-        return defaultStatus[Dealias(k)] or 0
+        return GetDefaultStatue(k) or 0
     end,
 })
 
@@ -147,7 +156,7 @@ local function ClearStatue()
 end
 
 local function GetCharLang( name )
-    return (annstyle == "CHARACTER" and name) and COC_DICE_LANG[string.upper(name)] or COC_DICE_LANG.DEFAULT
+    return (annstyle == "CHARACTER" and name) and COC7_DICE_LANG[string.upper(name)] or COC7_DICE_LANG.DEFAULT
 end
 
 
@@ -166,10 +175,23 @@ function COC7_GetStString( charName, arg1, arg2 )
                 ST_VALUE = GetStatue(arg2),
             })  --/st show san
         else
-            return nil
+            return
         end
     else
-        if string.match(arg1, "%D+%d+") then
+        if string.lower(arg1) == "show" then
+            local changedStatus = {}
+            for i,v in pairs(status) do
+                if GetStatue(i) ~= GetDefaultStatue(i) then
+                    changedStatus[Dealias(i)] = v
+                end
+            end
+            
+            local str = ""
+            for i,v in pairs(changedStatus) do  --其实这个循环完全可以在上一个循环里一并搞定的，但我保险起见还是拆成了两次循环
+                str = string.format("%s; %s%d", str, i, v)
+            end
+            return str, "show"
+        elseif string.match(arg1, "%D+%d+") then
             local count = 0
             local tempTable = {}
 
@@ -208,7 +230,7 @@ function COC7_GetStString( charName, arg1, arg2 )
             ClearStatue()
             return charLang.ST_CLEAR  --/st clear; /st init (clear和init不区分大小写)
         else
-            return nil
+            return
         end
     end
 end
@@ -230,7 +252,7 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
             local bp_o,bp_n = string.match(str, "([BbPp])(%d+)")
             return string.upper(bp_o) == "B" and tonumber(bp_n) or tonumber(bp_n) * -1
         else
-            return nil
+            return
         end
     end
 
@@ -307,13 +329,13 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
                 m = d100(dice, m) < d100(dice, diceB[i]) and m or diceB[i]
             end
             res2 = d100(dice, m)
-            exDiceStr = string.format(" [%s%s] =%d", COC_DICE_LANG._.BONUS_DICE, exDiceStr, res2)
+            exDiceStr = string.format(" [%s%s] =%d", COC7_DICE_LANG._.BONUS_DICE, exDiceStr, res2)
         else
             for i=1,exDiceAmt do
                 m = d100(dice, m) > d100(dice, diceB[i]) and m or diceB[i]
             end
             res2 = d100(dice, m)
-            exDiceStr = string.format(" [%s%s] =%d", COC_DICE_LANG._.PENALTY_DICE, exDiceStr, res2)
+            exDiceStr = string.format(" [%s%s] =%d", COC7_DICE_LANG._.PENALTY_DICE, exDiceStr, res2)
         end
     end
 
@@ -414,8 +436,8 @@ function COC7_GetInsString( charName, type )
     local exp1 = string.format("1D10=%d", res1)  --症状
     local exp2 = string.format("1D10=%d", res2)  --持续时间
 
-    local ins_name = COC_DICE_LANG._[type].NAME[res1]
-    local ins_des = subfmt(COC_DICE_LANG._[type].DES[res1], {
+    local ins_name = COC7_DICE_LANG._[type].NAME[res1]
+    local ins_des = subfmt(COC7_DICE_LANG._[type].DES[res1], {
         CHAR_NAME = charLang.INS_CHAR_NAME
     })
 
@@ -446,9 +468,13 @@ AddModUserCommand("st", "st", {
     paramsoptional = { false, true },
     vote = false,
     localfn = function(params, caller)
-        local ststring = COC7_GetStString(caller.prefab, params.arg1, params.arg2)
+        local ststring, isshow = COC7_GetStString(caller.prefab, params.arg1, params.arg2)
         if not ststring then
-            return nil
+            return
+        end
+        if isshow then
+            LocalSay(MSG_PREFIX..ststring)
+            return
         end
         if displaycmd then
             Say("(/st"..
@@ -519,7 +545,7 @@ AddModUserCommand("sc", "sc", {
     localfn = function(params, caller)
         local scstring = COC7_GetScString(caller.prefab, params.value)
         if not scstring then
-            return nil
+            return
         end
         if displaycmd then
             Say("(/sc"..

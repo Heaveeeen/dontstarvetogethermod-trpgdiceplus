@@ -11,7 +11,7 @@ end
 
 function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
     if not exp then
-        return nil
+        return
     end
 
     local exp2 = string.gsub(string.gsub(exp, "%s+", ""), "x", "*")  --"(3D6+10)*3+1D10"
@@ -31,7 +31,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
 
     local function operate( e, p, op )
         if not e then
-            return nil
+            return
         end
         local _e = e
         while string.match(_e, op) do
@@ -39,7 +39,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
             n1 = _G.tonumber(n1)
             n2 = _G.tonumber(n2)
             if not (n1 and n2) then
-                return nil
+                return
             end
             local r = o == "+" and n1 + n2
                 or o == "-" and n1 - n2
@@ -53,7 +53,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
 
     local function getValue( e )
         if not e then
-            return nil
+            return
         end
 
         local _e = e
@@ -62,7 +62,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
         while temp do
 			local value = getValue(string.sub(temp,2,-2))
 			if not value then
-				return nil
+				return
 			end
             _e = string.gsub(_e, "%b()", value,1)
             temp = string.match(_e, "%b()")
@@ -70,7 +70,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
 
         _e = operate(_e, "(%d+)([%*/])(%d+)", "[%*/]")  --"63+4"
         if not _e then
-            return nil
+            return
         end
         _e = operate(_e, "(%d+)([%+%-])(%d+)", "[%+%-]")  --"67"
 

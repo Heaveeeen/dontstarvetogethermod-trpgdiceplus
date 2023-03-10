@@ -23,7 +23,7 @@ local LangMetatable =
     end,
 }
 
-setmetatable(COC_DICE_LANG, LangMetatable)
+setmetatable(COC7_DICE_LANG, LangMetatable)
 
 
 
