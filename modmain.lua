@@ -1,3 +1,5 @@
+GLOBAL.setmetatable(env,{__index=function(t,k)return GLOBAL.rawget(GLOBAL,k)end})
+
 local Lang = GetModConfigData("LANGUAGE")
 modimport("lang/lang-" .. Lang .. ".lua")
 
@@ -7,27 +9,36 @@ modimport("dice/dice-" .. TRPGRule .. ".lua")
 MSG_PREFIX = "\238\132\130"
 
 function Say(str)
-    GLOBAL.TheNet:Say(str)
+    TheNet:Say(str)
 end
 
 function LocalSay( str )
-	GLOBAL.ChatHistory:AddToHistory(GLOBAL.ChatTypes.Message, nil, nil, MSG_PREFIX .. "[Trpg Dice +]", str, { 0.6, 0.6, 0.6, 1, }, nil, nil, true)
+	ChatHistory:AddToHistory(ChatTypes.Message, nil, nil, MSG_PREFIX .. "[Trpg Dice +]", str, { 0.6, 0.6, 0.6, 1, }, nil, nil, true)
 end
+
+local LangMetatable =
+{
+    __index = function(t, k)
+        return t.DEFAULT
+    end,
+}
+
+setmetatable(COC_DICE_LANG, LangMetatable)
 
 
 
 
 local RuleInfo = RULE_INFO[TRPGRule]._
 if TRPGRule == "COC7" then
-    RuleInfo = GLOBAL.subfmt(RuleInfo, {
+    RuleInfo = subfmt(RuleInfo, {
         COC_SUB_RULE = RULE_INFO.COC7.COC_SUB_RULE[GetModConfigData("COC_SUB_RULE")+1]
     })
 end
 
-GLOBAL.AddModUserCommand("rule", "rule", {
+AddModUserCommand("rule", "rule", {
     prettyname = nil,
     desc = nil,
-    permission = GLOBAL.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -41,12 +52,12 @@ GLOBAL.AddModUserCommand("rule", "rule", {
 
 
 
-GLOBAL.setmetatable(DICE_HELP_LANG.COC7, { __index = DICE_HELP_LANG.NONE, })
+setmetatable(DICE_HELP_LANG.COC7, { __index = DICE_HELP_LANG.NONE, })
 
-GLOBAL.AddModUserCommand("dicehelp", "dicehelp", {
+AddModUserCommand("dicehelp", "dicehelp", {
     prettyname = nil,
     desc = nil,
-    permission = GLOBAL.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,

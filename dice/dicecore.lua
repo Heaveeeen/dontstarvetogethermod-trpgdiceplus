@@ -1,6 +1,5 @@
 GLOBAL.math.randomseed(GLOBAL.os.time())
 local rand = GLOBAL.math.random
-local _G = GLOBAL
 
 local function roll( amount, sides )
     local count = 0

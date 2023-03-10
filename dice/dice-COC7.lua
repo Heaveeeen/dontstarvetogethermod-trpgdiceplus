@@ -1,7 +1,5 @@
 modimport("dice/dice-NONE.lua")
 
-local _G = GLOBAL
-
 local roomrule = GetModConfigData("COC_SUB_RULE")
 local displaycmd = GetModConfigData("DISPLAY_COMMAND")
 local annstyle = GetModConfigData("ANNOUNCE_STYLE")
@@ -123,7 +121,7 @@ local function Dealias( name )
     return name
 end
 
-_G.setmetatable(status, {
+setmetatable(status, {
     __index = function( t, k )
         return defaultStatus[Dealias(k)] or 0
     end,
@@ -134,13 +132,13 @@ local function GetStatue( name )
 end
 
 local function SetStatue( name, value )
-    status[Dealias(name)] = _G.tonumber(value)
+    status[Dealias(name)] = tonumber(value)
 end
 
 local function ChangeStatue( name, value )
     local n = Dealias(name)
-    if _G.tonumber(status[n]) then
-        status[n] = status[n] + _G.tonumber(value)
+    if tonumber(status[n]) then
+        status[n] = status[n] + tonumber(value)
     end
 end
 
@@ -163,7 +161,7 @@ function COC7_GetStString( charName, arg1, arg2 )
 
     if arg2 then
         if string.lower(arg1) == "show" then
-            return _G.subfmt(charLang.ST_SHOW, {
+            return subfmt(charLang.ST_SHOW, {
                 ST_NAME = arg2,
                 ST_VALUE = GetStatue(arg2),
             })  --/st show san
@@ -182,9 +180,9 @@ function COC7_GetStString( charName, arg1, arg2 )
                     name = string.sub(name, 1, -2)
                 end
                 if name ~= "" and not string.match(string.sub(name, -1), "[%+%-]") then
-                    tempTable[name] = { op = operator, v = _G.tonumber(value), }
+                    tempTable[name] = { op = operator, v = tonumber(value), }
                 else
-                    return _G.subfmt(charLang.ST_ERROR, {
+                    return subfmt(charLang.ST_ERROR, {
                         ST_ERR_NUM = count,
                         ST_ERR_CODE = name..(operator or "")..value,
                     })  --用/st设置属性时格式出错
@@ -202,8 +200,8 @@ function COC7_GetStString( charName, arg1, arg2 )
                 end
             end
 
-            return _G.subfmt(charLang.ST, {
-                ST_AMOUNT = _G.tostring(count),
+            return subfmt(charLang.ST, {
+                ST_AMOUNT = tostring(count),
             })  --/st 力量50体质50xxxxxxxx; /st san-5hp+2
 
         elseif (string.lower(arg1) == "clear") or (string.lower(arg1) == "init") then
@@ -230,7 +228,7 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     local function getBP( str )
         if string.match(str, "[BbPp]%d+") == str then
             local bp_o,bp_n = string.match(str, "([BbPp])(%d+)")
-            return string.upper(bp_o) == "B" and _G.tonumber(bp_n) or _G.tonumber(bp_n) * -1
+            return string.upper(bp_o) == "B" and tonumber(bp_n) or tonumber(bp_n) * -1
         else
             return nil
         end
@@ -239,8 +237,8 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     if arg1 == nil then  --没有参数
         stvalue = 0  --/ra
     elseif arg2 == nil then  -----* 1个参数 *
-        if _G.tonumber(arg1) then
-            stvalue = _G.tonumber(arg1)  --/ra 70
+        if tonumber(arg1) then
+            stvalue = tonumber(arg1)  --/ra 70
         else
             name = arg1
             stvalue = GetStatue(name)  --/ra 侦查
@@ -248,16 +246,16 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     elseif arg3 == nil then  -----* 2个参数 *
         if getBP(arg2) then
             bp = getBP(arg2)
-            if _G.tonumber(arg1) then
-                stvalue = _G.tonumber(arg1)  --/ra 70 B2
+            if tonumber(arg1) then
+                stvalue = tonumber(arg1)  --/ra 70 B2
             else
                 name = arg1
                 stvalue = GetStatue(name)  --/ra 侦查 P1
             end
         else
-            local temp = _G.tonumber(arg1) or _G.tonumber(arg2)
+            local temp = tonumber(arg1) or tonumber(arg2)
             if temp then
-                name = _G.tonumber(arg1) and arg2 or arg1
+                name = tonumber(arg1) and arg2 or arg1
                 stvalue = temp  --/ra 邪教徒斗殴 50; /ra 40 邪教徒射击
             else
                 name = arg1.."-"..arg2
@@ -266,9 +264,9 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
         end
     else  ------------------------* 3个参数 *
         bp = getBP(arg3) or 0
-        local temp = _G.tonumber(arg1) or _G.tonumber(arg2)
+        local temp = tonumber(arg1) or tonumber(arg2)
         if temp then
-            name = _G.tonumber(arg1) and arg2 or arg1
+            name = tonumber(arg1) and arg2 or arg1
             stvalue = temp  --/ra 邪教徒驾驶 60 b2; /ra 60 邪教徒驾驶 P1
         else
             name = arg1.."-"..arg2
@@ -277,7 +275,7 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     end
 
     local bonus = bp > 0
-    local exDiceAmt = _G.math.abs(bp)
+    local exDiceAmt = math.abs(bp)
 
     local dice = ParseDiceExp("1D10")
     local diceB = {}
@@ -298,9 +296,9 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     local exDiceStr = ""
 
     if exDiceAmt > 0 then
-        exDiceStr = _G.tostring(diceB[1])
+        exDiceStr = tostring(diceB[1])
         for i=2,exDiceAmt do
-            exDiceStr = exDiceStr .. "," .. _G.tostring(diceB[i])
+            exDiceStr = exDiceStr .. "," .. tostring(diceB[i])
         end
 
         local m = diceB[exDiceAmt+1]
@@ -344,9 +342,9 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     local function OtherRes(r, s)
         if r > s then
             return 2  --失败
-        elseif r > _G.math.floor(s/2) then
+        elseif r > math.floor(s/2) then
             return 3  --常规成功
-        elseif r > _G.math.floor(s/5) then
+        elseif r > math.floor(s/5) then
             return 4  --困难成功
         else
             return 5  --极难成功
@@ -355,11 +353,11 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
 
     local rares = CriOrFum(roomrule, res2, stvalue) or OtherRes(res2, stvalue)
 
-    return name and _G.subfmt(charLang.NRA, {
+    return name and subfmt(charLang.NRA, {
         RA_NAME = name,
         EXP = string.format("1D100=%d%s/%d", res1, exDiceStr, stvalue),
         RA_RES = charLang.RA_RES[rares],
-    }) or _G.subfmt(charLang.RA, {
+    }) or subfmt(charLang.RA, {
         EXP = string.format("1D100=%d%s/%d", res1, exDiceStr, stvalue),
         RA_RES = charLang.RA_RES[rares],
     })
@@ -392,7 +390,7 @@ function COC7_GetScString( charName, scValue )
             local exp2 = string.format("%s=%d", sanExp, res2)
 
             ChangeStatue("san", -1 * res2)
-            return _G.subfmt(str, {
+            return subfmt(str, {
                 SC_VALUE = scValue,
                 EXP = exp1,
                 EXP_2 = exp2,
@@ -417,11 +415,11 @@ function COC7_GetInsString( charName, type )
     local exp2 = string.format("1D10=%d", res2)  --持续时间
 
     local ins_name = COC_DICE_LANG._[type].NAME[res1]
-    local ins_des = _G.subfmt(COC_DICE_LANG._[type].DES[res1], {
+    local ins_des = subfmt(COC_DICE_LANG._[type].DES[res1], {
         CHAR_NAME = charLang.INS_CHAR_NAME
     })
 
-    return _G.subfmt(charLang[type], {
+    return subfmt(charLang[type], {
         EXP = exp1,
         EXP_2 = exp2,
         INS_NAME = ins_name,
@@ -437,10 +435,10 @@ end
 
 
 
-_G.AddModUserCommand("st", "st", {
+AddModUserCommand("st", "st", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -478,10 +476,10 @@ local function ralocalfn( params, caller, cmdname )
     end
 end
 
-_G.AddModUserCommand("ra", "ra", {
+AddModUserCommand("ra", "ra", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -493,10 +491,10 @@ _G.AddModUserCommand("ra", "ra", {
     end,
 })
 
-_G.AddModUserCommand("rc", "rc", {
+AddModUserCommand("rc", "rc", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -508,10 +506,10 @@ _G.AddModUserCommand("rc", "rc", {
     end,
 })
 
-_G.AddModUserCommand("sc", "sc", {
+AddModUserCommand("sc", "sc", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -534,10 +532,10 @@ _G.AddModUserCommand("sc", "sc", {
     end,
 })
 
-_G.AddModUserCommand("ti", "ti", {
+AddModUserCommand("ti", "ti", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -552,10 +550,10 @@ _G.AddModUserCommand("ti", "ti", {
     end,
 })
 
-_G.AddModUserCommand("li", "li", {
+AddModUserCommand("li", "li", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,

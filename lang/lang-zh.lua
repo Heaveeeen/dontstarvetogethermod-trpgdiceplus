@@ -827,16 +827,6 @@ COC_DICE_LANG =
     },
 }
 
-local LangMetatable =
-{
-    __index = function(t, k)
-        return t.DEFAULT
-    end,
-}
-
-GLOBAL.setmetatable(COC_DICE_LANG, LangMetatable)
-
-
 RULE_INFO = 
 {
     COC7 =

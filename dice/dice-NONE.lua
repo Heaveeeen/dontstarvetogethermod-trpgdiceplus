@@ -1,7 +1,6 @@
 modimport("dice/dicecore.lua")
 
 local DEFAULT_DICE = "1D100"
-local _G = GLOBAL
 
 local displaycmd = GetModConfigData("DISPLAY_COMMAND")
 local annstyle = GetModConfigData("ANNOUNCE_STYLE")
@@ -32,14 +31,14 @@ function GetRString( charName, arg1, arg2 )
         else
             return GetRString(charName, DEFAULT_DICE, arg1.."-"..arg2)  --/r 心理 学 <==> /r 心理-学
         end
-        return _G.subfmt(charLang.NR, {
+        return subfmt(charLang.NR, {
                 R_NAME = name,
                 EXP = string.format("%s=%d", exp, ParseDiceExp(exp)),
             })  --/r 1D100 心理学
     else
         local temp = arg1 or arg2
         if ParseDiceExp(temp) then
-            return _G.subfmt(charLang.R, {
+            return subfmt(charLang.R, {
                 EXP = string.format("%s=%d", temp, ParseDiceExp(temp)),
             })  --/r 1D100
         else
@@ -70,19 +69,19 @@ function GetRhString( charName, arg1, arg2 )
         else
             return GetRhString(charName, DEFAULT_DICE, arg1.."-"..arg2)  --/rh 心理 学 <==> /rh 心理-学
         end
-        return _G.subfmt(charLang.NRH, {
+        return subfmt(charLang.NRH, {
             R_NAME = name,
             EXP = exp,
-        }), _G.subfmt(charLang.NRHR, {
+        }), subfmt(charLang.NRHR, {
             R_NAME = name,
             EXP = string.format("%s=%d", exp, ParseDiceExp(exp)),
         })  --/rh 1D100 心理学
     else
         local temp = arg1 or arg2
         if ParseDiceExp(temp) then
-            return _G.subfmt(charLang.RH, {
+            return subfmt(charLang.RH, {
                 EXP = temp,
-            }), _G.subfmt(charLang.RHR, {
+            }), subfmt(charLang.RHR, {
                 EXP = string.format("%s=%d", temp, ParseDiceExp(temp)),
             })  --/rh 1D100
         else
@@ -99,10 +98,10 @@ end
 
 
 
-_G.AddModUserCommand("r", "r", {
+AddModUserCommand("r", "r", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
@@ -125,10 +124,10 @@ _G.AddModUserCommand("r", "r", {
 
 
 
-_G.AddModUserCommand("rh", "rh", {
+AddModUserCommand("rh", "rh", {
     prettyname = nil,
     desc = nil,
-    permission = _G.COMMAND_PERMISSION.USER,
+    permission = COMMAND_PERMISSION.USER,
     slash = true,
     usermenu = false,
     servermenu = false,
