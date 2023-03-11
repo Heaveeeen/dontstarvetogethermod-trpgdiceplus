@@ -44,7 +44,13 @@ COC7_DICE_LANG =
             },
         },
 
-        COC = "- 力量:{STR}, 体质:{CON}, 体型:{SIZ}, 敏捷:{DEX}, 外貌:{APP}, 智力:{INT}, 意志:{POW}, 教育:{EDU}, 幸运:{LUCK};\n总计:{TOTAL}/{TOTAL_LUCK}; hp:{HP}, mp:{MP}。"
+        COC = "- 力量:{STR}, 体质:{CON}, 体型:{SIZ}, 敏捷:{DEX}, 外貌:{APP}, 智力:{INT}, 意志:{POW}, 教育:{EDU}, 幸运:{LUCK};\n总计:{TOTAL}/{TOTAL_LUCK}; hp:{HP}, san:{SAN}, mp:{MP}。",
+
+        ST_SAVE = "已创建新调查员 \"{ST_NAME}\" 。",
+        ST_SAVE_ERROR = "调查员 \"{ST_NAME}\" 已有保存的数据, 如果想覆盖旧的数据, 请使用 /st update <调查员名称> 或 /st overwrite <调查员名称> 。",
+        ST_UPDATE = "已更新调查员 \"{ST_NAME}\" 的数据。",
+        ST_DELETE = "已删除调查员 \"{ST_NAME}\" 的所有数据。",
+        ST_CANT_FIND = "找不到名为 \"{ST_NAME}\" 的调查员数据。",
     },
 
     DEFAULT =
@@ -105,7 +111,7 @@ COC7_DICE_LANG =
         {ST_AMOUNT}     使用/st指令时设定属性的数量
         {ST_ERR_NUM}    /st指令的键值对不合法时, 错误键值对的序号 (即出错的是第几个键值对)
         {ST_ERR_CODE}   /st指令的键值对不合法时, 错误键值对的内容
-        {ST_NAME}       属性 (或技能) 名称
+        {ST_NAME}       属性 (或技能) 名称, /st save等指令中指调查员名称
         {ST_VALUE}      属性 (或技能) 的数值
 
         {RA_NAME}       检定名称, 通常是属性或技能的名称
@@ -879,12 +885,21 @@ DICE_HELP_LANG =
 属性值可以是数字（设置属性），也可以是带符号的数字（更改属性），例：
 - /st 力量60体质50体型55san-2hp+1
 --------------------------------
+/st save <调查员名称>
+/st load <调查员名称>
+保存和读取调查员的数据以便下次读取。
+/st update <调查员名称>
+/st overwrite <调查员名称>
+与 /st save 同理，用于更新调查员的数据。
+/st delete <调查员名称>
+删除一个调查员的数据。
+/st list
+列出所有已保存的调查员。
+--------------------------------
 /st show <属性名>
 获取一个或全部属性的当前值。例：
 - /st show 图书馆
-- /st show 魔法值
-属性名是可选的，留空则会列出所有与默认值不同的属性，例：
-- /st show
+属性名是可选的，留空则会列出所有与默认值不同的属性。
 --------------------------------
 /st clear
 /st init
@@ -918,10 +933,8 @@ DICE_HELP_LANG =
 抽取一个疯狂发作 总结 症状并给出持续时间。]],
 
         COC = [[
-/coc <数量>
-随机生成一套或多套人物属性值供参考。
-数量是可选的，默认为1。例：
-- /coc
+/coc
+随机生成一套人物属性值供参考。
 - /coc 5]],
     },
 

@@ -18,11 +18,10 @@ shipwrecked_compatible = false
 --server
 server_only_mod = true
 client_only_mod = false
-all_clients_require_mod = true
 --client
 --server_only_mod = false
 --client_only_mod = true
---all_clients_require_mod = false
+all_clients_require_mod = false
 
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
