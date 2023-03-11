@@ -5,7 +5,7 @@ description = [[
 在游戏中输入“/dicehelp”以获取使用帮助。]]
 
 author = "苍穹"
-version = "1.0"
+version = "1.1"
 
 forumthread = ""
 api_version_dst = 10
@@ -15,8 +15,12 @@ dont_starve_compatible = false
 reign_of_giants_compatible = false
 shipwrecked_compatible = false
 
+--server
 server_only_mod = true
 client_only_mod = false
+--client
+--server_only_mod = false
+--client_only_mod = true
 all_clients_require_mod = false
 
 icon_atlas = "modicon.xml"
