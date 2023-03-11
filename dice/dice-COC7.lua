@@ -1,4 +1,5 @@
 modimport("dice/dice-NONE.lua")
+modimport("scripts/memory.lua")
 
 local roomrule = GetModConfigData("COC_SUB_RULE")
 local displaycmd = GetModConfigData("DISPLAY_COMMAND")
@@ -57,78 +58,79 @@ local function GetDefaultStatue( name )
     return defaultStatus[Dealias(name)] or 0
 end
 
-SetDefaultStatue("会计", 5)
-SetDefaultStatue("人类学", 1)
-SetDefaultStatue("估价", 5)
-SetDefaultStatue("考古学", 1)
-SetDefaultStatue("取悦", 15)
-SetDefaultStatue("攀爬", 20)
-SetDefaultStatue("计算机使用", 5)
-SetDefaultStatue("乔装", 5)
-SetDefaultStatue("汽车驾驶", 20)
-SetDefaultStatue("电气维修", 10)
-SetDefaultStatue("电子学", 1)
-SetDefaultStatue("话术", 5)
-SetDefaultStatue("斗殴", 25)
-SetDefaultStatue("斧", 15)
-SetDefaultStatue("链锯", 10)
-SetDefaultStatue("连枷", 10)
-SetDefaultStatue("绞索", 15)
-SetDefaultStatue("矛", 20)
-SetDefaultStatue("剑", 20)
-SetDefaultStatue("鞭", 5)
-SetDefaultStatue("手枪", 20)
-SetDefaultStatue("弓", 15)
-SetDefaultStatue("重武器", 10)
-SetDefaultStatue("火焰喷射器", 10)
-SetDefaultStatue("机枪", 10)
-SetDefaultStatue("步枪", 25)
-SetDefaultStatue("冲锋枪", 15)
-SetDefaultStatue("急救", 30)
-SetDefaultStatue("历史", 5)
-SetDefaultStatue("恐吓", 15)
-SetDefaultStatue("跳跃", 20)
-SetDefaultStatue("法律", 5)
-SetDefaultStatue("图书馆使用", 20)
-SetDefaultStatue("聆听", 20)
-SetDefaultStatue("锁匠", 1)
-SetDefaultStatue("机械维修", 10)
-SetDefaultStatue("医学", 1)
-SetDefaultStatue("博物学", 10)
-SetDefaultStatue("领航", 10)
-SetDefaultStatue("神秘学", 5)
-SetDefaultStatue("操作重型机械", 1)
-SetDefaultStatue("说服", 10)
-SetDefaultStatue("驾驶", 1)
-SetDefaultStatue("精神分析", 1)
-SetDefaultStatue("心理学", 10)
-SetDefaultStatue("骑术", 5)
-SetDefaultStatue("天文学", 1)
-SetDefaultStatue("生物学", 1)
-SetDefaultStatue("植物学", 1)
-SetDefaultStatue("化学", 1)
-SetDefaultStatue("密码学", 1)
-SetDefaultStatue("工程学", 1)
-SetDefaultStatue("司法科学", 1)
-SetDefaultStatue("地质学", 1)
-SetDefaultStatue("数学", 10)
-SetDefaultStatue("气象学", 1)
-SetDefaultStatue("药学", 1)
-SetDefaultStatue("物理学", 1)
-SetDefaultStatue("动物学", 1)
-SetDefaultStatue("妙手", 10)
-SetDefaultStatue("侦查", 25)
-SetDefaultStatue("潜行", 20)
-SetDefaultStatue("生存", 10)
-SetDefaultStatue("游泳", 20)
-SetDefaultStatue("投掷", 20)
-SetDefaultStatue("追踪", 10)
-SetDefaultStatue("驯兽", 5)
-SetDefaultStatue("潜水", 1)
-SetDefaultStatue("爆破", 1)
-SetDefaultStatue("读唇", 1)
-SetDefaultStatue("催眠", 1)
-SetDefaultStatue("炮术", 1)
+--默认属性
+    SetDefaultStatue("会计", 5)
+    SetDefaultStatue("人类学", 1)
+    SetDefaultStatue("估价", 5)
+    SetDefaultStatue("考古学", 1)
+    SetDefaultStatue("取悦", 15)
+    SetDefaultStatue("攀爬", 20)
+    SetDefaultStatue("计算机使用", 5)
+    SetDefaultStatue("乔装", 5)
+    SetDefaultStatue("汽车驾驶", 20)
+    SetDefaultStatue("电气维修", 10)
+    SetDefaultStatue("电子学", 1)
+    SetDefaultStatue("话术", 5)
+    SetDefaultStatue("斗殴", 25)
+    SetDefaultStatue("斧", 15)
+    SetDefaultStatue("链锯", 10)
+    SetDefaultStatue("连枷", 10)
+    SetDefaultStatue("绞索", 15)
+    SetDefaultStatue("矛", 20)
+    SetDefaultStatue("剑", 20)
+    SetDefaultStatue("鞭", 5)
+    SetDefaultStatue("手枪", 20)
+    SetDefaultStatue("弓", 15)
+    SetDefaultStatue("重武器", 10)
+    SetDefaultStatue("火焰喷射器", 10)
+    SetDefaultStatue("机枪", 10)
+    SetDefaultStatue("步枪", 25)
+    SetDefaultStatue("冲锋枪", 15)
+    SetDefaultStatue("急救", 30)
+    SetDefaultStatue("历史", 5)
+    SetDefaultStatue("恐吓", 15)
+    SetDefaultStatue("跳跃", 20)
+    SetDefaultStatue("法律", 5)
+    SetDefaultStatue("图书馆使用", 20)
+    SetDefaultStatue("聆听", 20)
+    SetDefaultStatue("锁匠", 1)
+    SetDefaultStatue("机械维修", 10)
+    SetDefaultStatue("医学", 1)
+    SetDefaultStatue("博物学", 10)
+    SetDefaultStatue("领航", 10)
+    SetDefaultStatue("神秘学", 5)
+    SetDefaultStatue("操作重型机械", 1)
+    SetDefaultStatue("说服", 10)
+    SetDefaultStatue("驾驶", 1)
+    SetDefaultStatue("精神分析", 1)
+    SetDefaultStatue("心理学", 10)
+    SetDefaultStatue("骑术", 5)
+    SetDefaultStatue("天文学", 1)
+    SetDefaultStatue("生物学", 1)
+    SetDefaultStatue("植物学", 1)
+    SetDefaultStatue("化学", 1)
+    SetDefaultStatue("密码学", 1)
+    SetDefaultStatue("工程学", 1)
+    SetDefaultStatue("司法科学", 1)
+    SetDefaultStatue("地质学", 1)
+    SetDefaultStatue("数学", 10)
+    SetDefaultStatue("气象学", 1)
+    SetDefaultStatue("药学", 1)
+    SetDefaultStatue("物理学", 1)
+    SetDefaultStatue("动物学", 1)
+    SetDefaultStatue("妙手", 10)
+    SetDefaultStatue("侦查", 25)
+    SetDefaultStatue("潜行", 20)
+    SetDefaultStatue("生存", 10)
+    SetDefaultStatue("游泳", 20)
+    SetDefaultStatue("投掷", 20)
+    SetDefaultStatue("追踪", 10)
+    SetDefaultStatue("驯兽", 5)
+    SetDefaultStatue("潜水", 1)
+    SetDefaultStatue("爆破", 1)
+    SetDefaultStatue("读唇", 1)
+    SetDefaultStatue("催眠", 1)
+    SetDefaultStatue("炮术", 1)
 
 setmetatable(status, {
     __index = function( t, k )
@@ -149,6 +151,21 @@ end
 
 local function ChangeStatue( name, value )
     SetStatue(name, GetStatue(name) + tonumber(value))
+end
+
+local function GetStatusString()
+    local changedStatus = {}
+    for i,v in pairs(status) do
+        if GetStatue(i) ~= GetDefaultStatue(i) then
+            changedStatus[Dealias(i)] = v
+        end
+    end
+
+    local str = ""
+    for i,v in pairs(changedStatus) do  --其实这个循环完全可以在上一个循环里一并搞定的，但我保险起见还是拆成了两次循环
+        str = string.format("%s%s%d", str, i, v)
+    end
+    return str
 end
 
 local function ClearStatue()
@@ -174,23 +191,70 @@ function COC7_GetStString( charName, arg1, arg2 )
                 ST_NAME = arg2,
                 ST_VALUE = GetStatue(arg2),
             })  --/st show san
-        else
-            return
+        elseif string.lower(arg1) == "save" then  --SAVE
+            local characters = LoadDataFromFile("COC7")
+
+            if characters[arg2] then
+                return subfmt(COC7_DICE_LANG._.ST_SAVE_ERROR, {
+                    ST_NAME = arg2,
+                })
+            else
+                characters[arg2] = GetStatusString()
+                SaveDataToFile("COC7", characters)
+                return subfmt(COC7_DICE_LANG._.ST_SAVE, {
+                    ST_NAME = arg2,
+                })
+            end
+        elseif string.lower(arg1) == "load" then  --LOAD
+            local characters = LoadDataFromFile("COC7")
+
+            if characters[arg2] then
+                return COC7_GetStString(charName, characters[arg2])
+            else
+                return subfmt(COC7_DICE_LANG._.ST_CANT_FIND, {
+                    ST_NAME = arg2,
+                })
+            end
+        elseif (string.lower(arg1) == "update") or (string.lower(arg1) == "overwrite") then  --UPDATE/OVERWRITE
+            local characters = LoadDataFromFile("COC7")
+
+            if characters[arg2] then
+                characters[arg2] = GetStatusString()
+                SaveDataToFile("COC7", characters)
+                return subfmt(COC7_DICE_LANG._.ST_UPDATE, {
+                    ST_NAME = arg2,
+                })
+            else
+                return subfmt(COC7_DICE_LANG._.ST_CANT_FIND, {
+                    ST_NAME = arg2,
+                })
+            end
+        elseif string.lower(arg1) == "delete" then  --DELETE
+            local characters = LoadDataFromFile("COC7")
+
+            if characters[arg2] then
+                characters[arg2] = nil
+                SaveDataToFile("COC7", characters)
+                return subfmt(COC7_DICE_LANG._.ST_DELETE, {
+                    ST_NAME = arg2,
+                })
+            else
+                return subfmt(COC7_DICE_LANG._.ST_CANT_FIND, {
+                    ST_NAME = arg2,
+                })
+            end
         end
     else
         if string.lower(arg1) == "show" then
-            local changedStatus = {}
-            for i,v in pairs(status) do
-                if GetStatue(i) ~= GetDefaultStatue(i) then
-                    changedStatus[Dealias(i)] = v
-                end
-            end
-            
+            return GetStatusString(), "show"
+        elseif string.lower(arg1) == "list" then
+            local characters = LoadDataFromFile("COC7")
             local str = ""
-            for i,v in pairs(changedStatus) do  --其实这个循环完全可以在上一个循环里一并搞定的，但我保险起见还是拆成了两次循环
-                str = string.format("%s%s%d; ", str, i, v)
+
+            for name,code in pairs(characters) do
+                str = string.format("%s%s: %s;\n", str, name, code)
             end
-            return str, "show"
+            return str, "list"
         elseif string.match(arg1, "%D+%d+") then
             local count = 0
             local tempTable = {}
@@ -229,8 +293,6 @@ function COC7_GetStString( charName, arg1, arg2 )
         elseif (string.lower(arg1) == "clear") or (string.lower(arg1) == "init") then
             ClearStatue()
             return charLang.ST_CLEAR  --/st clear; /st init (clear和init不区分大小写)
-        else
-            return
         end
     end
 end
@@ -456,9 +518,7 @@ end
 --    COC    --
 ---------------
 
-function COC7_GetCocString( amount )
-    local a = tonumber(amount) or 1
-
+function COC7_GetCocString()
     local function GetRandomStatus()
         local t = {
             STR = ParseDiceExp("3D6*5"),
@@ -474,16 +534,12 @@ function COC7_GetCocString( amount )
         t.TOTAL = t.STR + t.CON + t.SIZ + t.DEX + t.APP + t.INT + t.POW + t.EDU
         t.TOTAL_LUCK = t.TOTAL + t.LUCK
         t.HP = math.floor((t.CON + t.SIZ) / 10)
+        t.SAN = math.floor(t.POW)
         t.MP = math.floor(t.POW / 5)
         return t
     end
 
-    res = {}
-    for i=1,a do
-        res[i] = subfmt(COC7_DICE_LANG._.COC, GetRandomStatus())
-    end
-
-    return res
+    return subfmt(COC7_DICE_LANG._.COC, GetRandomStatus())
 end
 
 
@@ -505,11 +561,11 @@ AddModUserCommand("st", "st", {
     paramsoptional = { false, true },
     vote = false,
     localfn = function(params, caller)
-        local ststring, isshow = COC7_GetStString(caller.prefab, params.arg1, params.arg2)
+        local ststring, localsay = COC7_GetStString(caller.prefab, params.arg1, params.arg2)
         if not ststring then
             return
         end
-        if isshow then
+        if localsay then
             LocalSay(MSG_PREFIX..ststring)
             return
         end
@@ -638,20 +694,13 @@ AddModUserCommand("coc", "coc", {
     slash = true,
     usermenu = false,
     servermenu = false,
-    params = { "amount" },
-    paramsoptional = { true },
+    params = {},
+    paramsoptional = {},
     vote = false,
     localfn = function(params, caller)
-        local cocstrings = COC7_GetCocString(params.amount)
-        for i,v in ipairs(cocstrings) do
-            if displaycmd then
-                Say("(/coc"..
-                    (params.amount and " " .. params.amount or "")..")"..
-                    MSG_PREFIX..v
-                )
-            else
-                Say(MSG_PREFIX..v)
-            end
-        end
+        Say(
+            (displaycmd and "(/coc)" or "")..
+            MSG_PREFIX..COC7_GetCocString(params.amount)
+        )
     end,
 })
