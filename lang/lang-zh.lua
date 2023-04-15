@@ -92,8 +92,8 @@ COC7_DICE_LANG =
 
         PRON_PER = "调查员",
         PRON_POS = "他的",
-        --疯狂发作-即时症状: 1D10=3, 暴力, 调查员陷入了六亲不认的暴力行为中, 对周围的敌人与友方进行着无差别的攻击。持续1D10=8小时。
-        TI = "疯狂发作-即时症状: {EXP}, {INS_NAME}, {INS_DES}。持续{EXP_2}小时。",
+        --疯狂发作-即时症状: 1D10=3, 暴力, 调查员陷入了六亲不认的暴力行为中, 对周围的敌人与友方进行着无差别的攻击。持续1D10=8轮。
+        TI = "疯狂发作-即时症状: {EXP}, {INS_NAME}, {INS_DES}。持续{EXP_2}轮。",
         --疯狂发作-总结症状: 1D10=5, 极端信念, 调查员采取了极端和疯狂的表现手段展示调查员的思想信念之一。持续了1D10=3小时。
         LI = "疯狂发作-总结症状: {EXP}, {INS_NAME}, {INS_DES}。持续{EXP_2}小时。",
     },
@@ -184,7 +184,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我疯了: 我开始{EXP}, {INS_NAME}了。在接下来的{EXP_2}小时内, {INS_DES}。",
+        TI = "我疯了: 我开始{EXP}, {INS_NAME}了。在接下来的{EXP_2}轮内, {INS_DES}。",
         LI = "我怎么了? 我好像在刚才的{EXP_2}小时内一直受困于{EXP}, {INS_NAME}的症状, 现在{INS_DES}。",
     },
 
@@ -222,7 +222,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "烧吧! 我开始{EXP}, {INS_NAME}了, 接下来{EXP_2}个小时之内, {INS_DES}。",
+        TI = "烧吧! 我开始{EXP}, {INS_NAME}了, 接下来{EXP_2}轮之内, {INS_DES}。",
         LI = "我怎么了? 我浪费{EXP_2}个小时{EXP}, {INS_NAME}了, 现在{INS_DES}。你在哪, 伯尼? ",
     },
 
@@ -260,7 +260,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "沃尔夫冈",
         PRON_POS = "他的",
-        TI = "沃尔夫冈好害怕: {EXP}, 沃尔夫冈出现了{INS_NAME}, {INS_DES}, 沃尔夫冈会在{EXP_2}小时后恢复正常!",
+        TI = "沃尔夫冈好害怕: {EXP}, 沃尔夫冈出现了{INS_NAME}, {INS_DES}, 沃尔夫冈会在{EXP_2}轮后恢复正常!",
         LI = "沃尔夫冈都干了什么? {EXP}, 沃尔夫冈{INS_NAME}! {INS_DES}, 已经过了{EXP_2}小时了? ",
     },
 
@@ -298,7 +298,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我的意识开始迷离: {EXP}, 我感到了{INS_NAME}。{INS_DES}。阿比盖尔, 请等我{EXP_2}小时。",
+        TI = "我的意识开始迷离: {EXP}, 我感到了{INS_NAME}。{INS_DES}。阿比盖尔, 请等我{EXP_2}轮。",
         LI = "我经历了最痛苦和恍惚的时间。{EXP}, 我经历了{INS_NAME}, {INS_DES}, 我无意义的人生又失去了{EXP_2}小时的时间。",
     },
 
@@ -336,7 +336,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "系统",
         PRON_POS = "我的",
-        TI = "警告, 系统开始出现故障: {EXP}, 检测到系统出现{INS_NAME}, {INS_DES}。预计修复时长: {EXP_2}小时。",
+        TI = "警告, 系统开始出现故障: {EXP}, 检测到系统出现{INS_NAME}, {INS_DES}。预计修复时长: {EXP_2}轮。",
         LI = "系统重启: {EXP}, 系统已持续了{EXP_2}小时的{INS_NAME}故障, 现象: {INS_DES}。",
     },
 
@@ -374,7 +374,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我开始出现幻觉了: {EXP}, 我这种状态的学名叫作 \"{INS_NAME}\" , {INS_DES}。哦不, 请等我{EXP_2}个小时……",
+        TI = "我开始出现幻觉了: {EXP}, 我这种状态的学名叫作 \"{INS_NAME}\" , {INS_DES}。哦不, 请等我{EXP_2}轮……",
         LI = "我刚刚经历了恐怖的幻觉: {EXP}, 学名为 \"{INS_NAME}\" , {INS_DES}。似乎已经过去{EXP_2}小时了。",
     },
 
@@ -412,7 +412,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我和露西",
         PRON_POS = "我的",
-        TI = "不! 我的诅咒开始生效了: {EXP}, 我和露西就像一头鹿一样{INS_NAME}, {INS_DES}! 我和露西得等上{EXP_2}小时才能恢复。",
+        TI = "不! 我的诅咒开始生效了: {EXP}, 我和露西就像一头鹿一样{INS_NAME}, {INS_DES}! 我和露西得等上{EXP_2}轮才能恢复。",
         LI = "我刚刚变成了一只鹅: {EXP}, 我和露西就像一只落魄的加拿大鹅一样{INS_NAME}, {INS_DES}……在过去的{EXP_2}个小时之内都是这样的。",
     },
 
@@ -450,7 +450,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "他",
         PRON_POS = "他的",
-        TI = "{EXP}(两手捂住脑袋, 做出{INS_NAME}的样子, {INS_DES}。这场 \"默剧演出\" 持续{EXP_2}个小时。)",
+        TI = "{EXP}(两手捂住脑袋, 做出{INS_NAME}的样子, {INS_DES}。这场 \"默剧演出\" 将持续{EXP_2}轮。)",
         LI = "{EXP}(惊恐地左顾右盼，做出刚刚经历了{INS_NAME}的样子, {INS_DES}。这场 \"默剧演出\" 持续了{EXP_2}个小时。)",
     },
 
@@ -488,7 +488,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我好像看到了它们: {EXP}, 我似乎出现了{INS_NAME}, {INS_DES}。这大概会持续{EXP_2}小时。",
+        TI = "我好像看到了它们: {EXP}, 我似乎出现了{INS_NAME}, {INS_DES}。这大概会持续{EXP_2}轮。",
         LI = "它们刚才与我交流了: {EXP}, 我经历了{INS_NAME}, {INS_DES}。大约已经过去{EXP_2}小时了。",
     },
 
@@ -526,7 +526,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我被恶魔附身了: {EXP}, 它们使我{INS_NAME}, {INS_DES}。我将用{EXP_2}小时与它们斗争!",
+        TI = "我被恶魔附身了: {EXP}, 它们使我{INS_NAME}, {INS_DES}。我将在{EXP_2}个战斗轮内击败它们!",
         LI = "刚刚有个恶魔附在了我身上: {EXP}, 我似乎{INS_NAME}, {INS_DES}。我用了{EXP_2}小时才将它们赶走!",
     },
 
@@ -564,7 +564,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我们",
         PRON_POS = "我们的",
-        TI = "我们好难受: {EXP}, 我们{INS_NAME}了, {INS_DES}, 或许要等上{EXP_2}小时才会好一些……",
+        TI = "我们好难受: {EXP}, 我们{INS_NAME}了, {INS_DES}, 或许要等上{EXP_2}轮才会好一些……",
         LI = "刚才真的好难受: {EXP}, 我们刚刚经历了{INS_NAME}, {INS_DES}, 好像已经过了整整{EXP_2}个小时!",
     },
 
@@ -602,7 +602,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "{EXP}, 我可能必须要为{INS_NAME}请{EXP_2}个小时的假了, {INS_DES}。",
+        TI = "{EXP}, 我可能必须要为{INS_NAME}休息上{EXP_2}轮的时间了, {INS_DES}。",
         LI = "{EXP}, 我为{INS_NAME}而请了{EXP_2}个小时的假, 到头来, {INS_DES}。",
     },
 
@@ -640,7 +640,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我恐怕会做出非常难吃的菜品, 这是因为{EXP}, 我患上{INS_NAME}了, {INS_DES}。等一等，新菜还有{EXP_2}个小时才能出锅!",
+        TI = "我恐怕会做出非常难吃的菜品, 这是因为{EXP}, 我患上{INS_NAME}了, {INS_DES}。等一等，新菜还有{EXP_2}轮才能出锅!",
         LI = "我的炖菜烧糊了! 因为我刚刚{EXP}, {INS_NAME}了, {INS_DES}, 这锅菜炖了整整{EXP_2}个小时!",
     },
 
@@ -678,7 +678,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我怎么了? {EXP}, 我好像{INS_NAME}了, {INS_DES}, 我要花上{EXP_2}小时……",
+        TI = "我怎么了? {EXP}, 我好像{INS_NAME}了, {INS_DES}, 我要花上{EXP_2}轮才能冷静下来……",
         LI = "我刚刚怎么了? {EXP}, 我刚刚{INS_NAME}了, {INS_DES}, 花掉了我{EXP_2}小时的时间。",
     },
 
@@ -716,7 +716,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "我意外唤醒了我的力量: {EXP}, 我会变得{INS_NAME}, {INS_DES}。大概会持续{EXP_2}小时, 原谅我, 我没有恶意。",
+        TI = "我意外唤醒了我的力量: {EXP}, 我会变得{INS_NAME}, {INS_DES}。大概会持续{EXP_2}轮, 原谅我, 我没有恶意。",
         LI = "我遭到天谴了: {EXP}, 我经历了{INS_NAME}, {INS_DES}。持续了{EXP_2}个小时!",
     },
 
@@ -754,7 +754,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "",
         PRON_POS = "",
-        TI = "病了: {EXP}, {INS_NAME}了, {INS_DES}。要等{EXP_2}小时。",
+        TI = "病了: {EXP}, {INS_NAME}了, {INS_DES}。要等{EXP_2}轮。",
         LI = "病了: {EXP}, 刚刚{INS_NAME}, {INS_DES}。过了{EXP_2}小时。",
     },
 
@@ -792,7 +792,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "",
         PRON_POS = "",
-        TI = "格浪噗, 好难受: {EXP}, 开始{INS_NAME}了, {INS_DES}, 要等{EXP_2}小时, 格勒噗。",
+        TI = "格浪噗, 好难受: {EXP}, 开始{INS_NAME}了, {INS_DES}, 要等{EXP_2}轮, 格勒噗。",
         LI = "格浪噗, 怎么了? {EXP}, 刚才{INS_NAME}了, {INS_DES}。已经过了{EXP_2}小时了, 格浪噗。",
     },
 
@@ -830,7 +830,7 @@ COC7_DICE_LANG =
 
         PRON_PER = "我",
         PRON_POS = "我的",
-        TI = "不, 他……他们找到我了! {EXP}, 我{INS_NAME}了, {INS_DES}! 不, 我会白白浪费{EXP_2}个小时的时间!",
+        TI = "不, 他……他们找到我了! {EXP}, 我{INS_NAME}了, {INS_DES}! 不, 我会白白浪费{EXP_2}轮的时间!",
         LI = "他们差点就追上我了: {EXP}, 我{INS_NAME}了, {INS_DES}。但我为此白白损失掉了整整{EXP_2}个小时的时间!",
     },
 }
@@ -844,7 +844,7 @@ RULE_INFO =
         {
             "0 (符合COC7规则书, 出1大成功, 不满50出96-100大失败, 满50出100大失败)",
             "1",
-            "2",
+            "2 (出1-5且<=成功率大成功 出100或出96-99且>成功率大失败)",
             "3 (出1-5大成功, 出96-100大失败)",
             "4",
             "5",
@@ -926,7 +926,7 @@ DICE_HELP_LANG =
 
         TI = [[
 /ti
-抽取一个疯狂发作 即时 症状并给出持续时间。]],
+抽取一个疯狂发作 即时 症状并给出持续时间（轮数）。]],
 
         LI = [[
 /li

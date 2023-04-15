@@ -13,7 +13,7 @@ function Say(str)
 end
 
 function LocalSay( str )
-	ChatHistory:AddToHistory(ChatTypes.Message, nil, nil, MSG_PREFIX .. "[Trpg Dice +]", str, { 0.6, 0.6, 0.6, 1, }, nil, nil, true)
+    ChatHistory:AddToHistory(ChatTypes.Message, nil, nil, MSG_PREFIX .. "[Trpg Dice +]", str, { 0.6, 0.6, 0.6, 1, }, nil, nil, true)
 end
 
 local LangMetatable =
@@ -46,7 +46,7 @@ AddModUserCommand("rule", "rule", {
     paramsoptional = {},
     vote = false,
     localfn = function(params, caller)
-        LocalSay("(/rule)\n"..RuleInfo)
+        Say("(/rule)\n"..RuleInfo)
     end,
 })
 

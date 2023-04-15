@@ -402,21 +402,32 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     end
 
     local function CriOrFum(roomrule, r, s)
-        if roomrule == 3 then
-            if r < 6 then
-                return 6  --大成功
-            elseif r > 95 then
-                return 1 --大失败
-            else
-                return false
-            end
-        elseif roomrule == 0 then
+    --r: 百分骰出目; s: 技能(或属性)值
+        if roomrule == 0 then
             if r == 1 then
                 return 6  --大成功
             elseif s < 50 and r > 95 then
                 return 1  --大失败（不满50）
             elseif s >= 50 and r == 100 then
                 return 1  --大失败（满50）
+            else
+                return false
+            end
+
+        elseif roomrule == 2 then
+            if r < 6 and r <= s then
+                return 6  --大成功
+            elseif (r > 95 and r > s) or r == 100 then
+                return 1 --大失败
+            else
+                return false
+            end
+
+        elseif roomrule == 3 then
+            if r < 6 then
+                return 6  --大成功
+            elseif r > 95 then
+                return 1 --大失败
             else
                 return false
             end

@@ -5,7 +5,7 @@ description = [[
 在游戏中输入“/dicehelp”以获取使用帮助。]]
 
 author = "苍穹"
-version = "1.1"
+version = "1.2"
 
 forumthread = ""
 api_version_dst = 10
@@ -51,7 +51,8 @@ configuration_options =
         options =
         {
             {description = "默认", data = 0, hover = "符合COC7规则书，出1大成功，不满50出96-100大失败，满50出100大失败"},
-            {description = "5点", data = 3, hover = "出1-5大成功，出96-100大失败"},
+            {description = "标准5点", data = 0, hover = "出1-5且<=成功率大成功，出100或出96-99且>成功率大失败"},
+            {description = "5点", data = 3, hover = "出1-5大成功（即使技能/属性值不足5），出96-100大失败"},
         },
         default = 0,
     },
