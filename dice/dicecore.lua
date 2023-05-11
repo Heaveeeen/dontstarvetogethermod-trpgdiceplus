@@ -9,6 +9,10 @@ local function roll( amount, sides )
     return count
 end
 
+function toint( arg )
+    return tonumber(arg) and math.floor(tonumber(arg))
+end
+
 function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
     if not exp then
         return
@@ -26,7 +30,7 @@ function ParseDiceExp( exp )  --"(3D6 + 10) x 3 + 1D10"
         else
             a,d,s = nil,string.match(exp2, "[dD]"),nil  -- D <==> 1D100
         end
-        exp2 = string.gsub(exp2, (a or "")..d..(s or ""), roll(tonumber(a) or 1, tonumber(s) or 100))
+        exp2 = string.gsub(exp2, (a or "")..d..(s or ""), roll(toint(a) or 1, toint(s) or 100))
     end    --"(11+10)*3+4"
 
     local function operate( e, p, op )

@@ -143,14 +143,14 @@ local function GetStatue( name )
 end
 
 local function SetStatue( name, value )
-    status[Dealias(name)] = tonumber(value)
+    status[Dealias(name)] = toint(value)
     if GetStatue(name) < 0 then
         SetStatue(name, 0)
     end
 end
 
 local function ChangeStatue( name, value )
-    SetStatue(name, GetStatue(name) + tonumber(value))
+    SetStatue(name, GetStatue(name) + toint(value))
 end
 
 local function GetStatusString()
@@ -266,7 +266,7 @@ function COC7_GetStString( charName, arg1, arg2 )
                     name = string.sub(name, 1, -2)
                 end
                 if name ~= "" and not string.match(string.sub(name, -1), "[%+%-]") then
-                    tempTable[name] = { op = operator, v = tonumber(value), }
+                    tempTable[name] = { op = operator, v = toint(value), }
                 else
                     return subfmt(charLang.ST_ERROR, {
                         ST_ERR_NUM = count,
@@ -287,7 +287,7 @@ function COC7_GetStString( charName, arg1, arg2 )
             end
 
             return subfmt(charLang.ST, {
-                ST_AMOUNT = tostring(count),
+                ST_AMOUNT = count,
             })  --/st 力量50体质50xxxxxxxx; /st san-5hp+2
 
         elseif (string.lower(arg1) == "clear") or (string.lower(arg1) == "init") then
@@ -310,9 +310,10 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     --此处的逻辑我整理了很久，有点复杂，详见：
     --https://github.com/Heaveeeen/dontstarvetogethermod-trpgdiceplus/issues/10
     local function getBP( str )
-        if string.match(str, "[BbPp]%d+") == str then
-            local bp_o,bp_n = string.match(str, "([BbPp])(%d+)")
-            return string.upper(bp_o) == "B" and tonumber(bp_n) or tonumber(bp_n) * -1
+        if string.match(str, "[BbPp]%d*") == str then
+            local bp_o,bp_n = string.match(str, "([BbPp])(%d*)")
+            bp_n = toint(bp_n) or 1
+            return string.upper(bp_o) == "B" and bp_n or bp_n * -1
         else
             return
         end
@@ -321,8 +322,8 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     if arg1 == nil then  --没有参数
         stvalue = 0  --/ra
     elseif arg2 == nil then  -----* 1个参数 *
-        if tonumber(arg1) then
-            stvalue = tonumber(arg1)  --/ra 70
+        if toint(arg1) then
+            stvalue = toint(arg1)  --/ra 70
         else
             name = arg1
             stvalue = GetStatue(name)  --/ra 侦查
@@ -330,16 +331,16 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
     elseif arg3 == nil then  -----* 2个参数 *
         if getBP(arg2) then
             bp = getBP(arg2)
-            if tonumber(arg1) then
-                stvalue = tonumber(arg1)  --/ra 70 B2
+            if toint(arg1) then
+                stvalue = toint(arg1)  --/ra 70 B2
             else
                 name = arg1
                 stvalue = GetStatue(name)  --/ra 侦查 P1
             end
         else
-            local temp = tonumber(arg1) or tonumber(arg2)
+            local temp = toint(arg1) or toint(arg2)
             if temp then
-                name = tonumber(arg1) and arg2 or arg1
+                name = toint(arg1) and arg2 or arg1
                 stvalue = temp  --/ra 邪教徒斗殴 50; /ra 40 邪教徒射击
             else
                 name = arg1.."-"..arg2
@@ -348,9 +349,9 @@ function COC7_GetRaString( charName, arg1, arg2, arg3 )
         end
     else  ------------------------* 3个参数 *
         bp = getBP(arg3) or 0
-        local temp = tonumber(arg1) or tonumber(arg2)
+        local temp = toint(arg1) or toint(arg2)
         if temp then
-            name = tonumber(arg1) and arg2 or arg1
+            name = toint(arg1) and arg2 or arg1
             stvalue = temp  --/ra 邪教徒驾驶 60 b2; /ra 60 邪教徒驾驶 P1
         else
             name = arg1.."-"..arg2
@@ -521,6 +522,39 @@ function COC7_GetInsString( charName, type )
         INS_NAME = ins_name,
         INS_DES = ins_des,
     })
+end
+
+
+
+---------------
+--  PH & MA  --
+---------------
+
+function COC7_GetPhMaString( type, arg )
+    local lang = COC7_DICE_LANG._[type]
+
+    if arg == "list" then  --/ph list
+        local temp = ""
+        for i,n in ipairs(lang.NAME) do
+            temp = string.format("%s%d. %s; ", temp, i, n)
+        end
+        return temp, "list"
+
+    else
+        if toint(arg) then
+            n = math.max(math.min(toint(arg),100),1)
+            exp = tostring(n)
+        else
+            n = ParseDiceExp("1D100")
+            exp = string.format("1D100=%d", n)
+        end
+
+        return subfmt(lang._, {
+            EXP = exp,
+            PH_MA_NAME = lang.NAME[n],
+            PH_MA_DES = lang.DES[n],
+        })
+    end
 end
 
 
@@ -713,5 +747,59 @@ AddModUserCommand("coc", "coc", {
             (displaycmd and "(/coc)" or "")..
             MSG_PREFIX..COC7_GetCocString(params.amount)
         )
+    end,
+})
+
+AddModUserCommand("ph", "ph", {
+    prettyname = nil,
+    desc = nil,
+    permission = COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "arg" },
+    paramsoptional = { true },
+    vote = false,
+    localfn = function(params, caller)
+        local phstring, localsay = COC7_GetPhMaString( "PH", params.arg )
+        if localsay then
+            LocalSay(MSG_PREFIX..phstring)
+            return
+        end
+        if displaycmd then
+            Say("(/ph"..
+                (params.arg and " " .. params.arg or "")..")"..
+                MSG_PREFIX..phstring
+            )
+        else
+            Say(MSG_PREFIX..phstring)
+        end
+    end,
+})
+
+AddModUserCommand("ma", "ma", {
+    prettyname = nil,
+    desc = nil,
+    permission = COMMAND_PERMISSION.USER,
+    slash = true,
+    usermenu = false,
+    servermenu = false,
+    params = { "arg" },
+    paramsoptional = { true },
+    vote = false,
+    localfn = function(params, caller)
+        local mastring, localsay = COC7_GetPhMaString( "MA", params.arg )
+        if localsay then
+            LocalSay(MSG_PREFIX..mastring)
+            return
+        end
+        if displaycmd then
+            Say("(/ma"..
+                (params.arg and " " .. params.arg or "")..")"..
+                MSG_PREFIX..mastring
+            )
+        else
+            Say(MSG_PREFIX..mastring)
+        end
     end,
 })
