@@ -5,7 +5,7 @@ description = [[
 在游戏中输入“/dicehelp”以获取使用帮助。]]
 
 author = "苍穹"
-version = "1.2.1"
+version = "1.3"
 
 forumthread = ""
 api_version_dst = 10
